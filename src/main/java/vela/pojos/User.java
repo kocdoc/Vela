@@ -13,6 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity(name = "vela_user")
+@NamedQueries({
+        @NamedQuery(name = "user.getUserByUsername", query = "SELECT u FROM vela_user u WHERE u.username = :username")
+})
 public class User implements Serializable {
     @Id
     private String username;
