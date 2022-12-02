@@ -6,6 +6,7 @@ import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
 import vela.controller.LoginController;
@@ -30,6 +31,7 @@ public class JWTNeededFilter implements ContainerRequestFilter {
             }
         } catch(Exception e){
             log.info("verification failed");
+            containerRequestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(e).build());
         }
     }
 }

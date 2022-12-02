@@ -3,6 +3,8 @@ package vela.console;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import vela.pojos.User;
+import vela.queries.UserQueries;
 
 
 public class TestConsole {
@@ -23,6 +25,9 @@ public class TestConsole {
     public static void main(String[] args) {
         TestConsole console =  new TestConsole();
         console.connect();
+
+//        UserQueries.addUser(new User("jartoc18", "Tobias", "Jaritz", "jartoc18@htl-kaindorf.at", "geheim123"));
+
         console.disconnect();
     }
 }
