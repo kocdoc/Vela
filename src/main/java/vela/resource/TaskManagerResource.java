@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/taskmanager")
+@RequestMapping("/api/taskmanager")
 public class TaskManagerResource {
 
     private DBConnection instance = DBConnection.getInstance();
