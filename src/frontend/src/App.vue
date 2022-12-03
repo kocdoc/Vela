@@ -1,16 +1,4 @@
 <template>
-<!--  <nav>-->
-<!--    <router-link :to="{ name: 'taskmanager' }">Tasks</router-link>-->
-<!--    <br>-->
-<!--    <router-link :to="{ name: 'projects' }">Projekte</router-link>-->
-<!--    <br>-->
-<!--    <router-link :to="{ name: 'calendar' }">Kalender</router-link>-->
-<!--    <br>-->
-<!--    <router-link :to="{ name: 'friends' }">Freunde</router-link>-->
-<!--    <br>-->
-<!--    <router-link :to="{ name: 'profile' }">Profil</router-link>-->
-<!--  </nav>-->
-<!--  <FriendsView/>-->
   <SidebarComponent/>
   <router-view/>
 </template>
@@ -39,6 +27,7 @@ nav a.router-link-exact-active {
 </style>
 <script>
 import SidebarComponent from '@/views/SidebarComponent'
+
 export default {
   components: { SidebarComponent }
 }
