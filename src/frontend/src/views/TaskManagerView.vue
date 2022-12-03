@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     addTodo () {
-      const newTask = { taskID: null, title: '', description: '', deadline: null, finishedDate: null, project: null, user: null }
+      const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, project: null, user: null }
       this.todos.push(newTask)
       // fetch
       fetch('/api/taskmanager/addTask?username=admin', {
@@ -116,7 +116,7 @@ export default {
             <!--                {{ category }}-->
             <!--              </option>-->
             <!--            </select>-->
-            <input v-model="todo.description" @keyup="updateTitle(todo)">
+            <input v-model="todo.category" @keyup="updateTitle(todo)">
           </td>
           <td class="py-4 px-6">
             <input type="date" v-model="todo.deadline" @change="updateTitle(todo)">
