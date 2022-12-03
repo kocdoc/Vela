@@ -21,6 +21,7 @@ public class Project implements Serializable {
     private String description;
     private String name;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "projectList")
     private List<User> userList;
 

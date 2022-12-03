@@ -15,6 +15,7 @@ import java.util.Objects;
 @Data
 @Entity(name = "vela_user")
 @NamedQueries({
+        @NamedQuery(name = "User.getUserByUsername", query = "SELECT u FROM vela_user u WHERE u.username LIKE :username"),
         @NamedQuery(name = "user.getUserByUsername", query = "SELECT u FROM vela_user u WHERE u.username = :username"),
         @NamedQuery(name = "user.getAllUsers", query = "SELECT u FROM vela_user u")
 })
@@ -26,6 +27,7 @@ public class User implements Serializable {
     private String email;
     private String password;
 
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "friend", joinColumns = {
             @JoinColumn(name = "own_username")
@@ -34,6 +36,7 @@ public class User implements Serializable {
     })
     private List<User> friendList;
 
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "friend_request", joinColumns = {
             @JoinColumn(name = "own_username")
@@ -42,6 +45,7 @@ public class User implements Serializable {
     })
     private List<User> requestList;
 
+    @ToString.Exclude
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_project", joinColumns = {
             @JoinColumn(name = "username")
@@ -50,11 +54,11 @@ public class User implements Serializable {
     })
     private List<Project> projectList;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST)
     @ToString.Exclude
     private List<Task> taskList;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST)
     @ToString.Exclude
     private List<Event> eventList;
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class Event implements Serializable{
     private String description;
     private String name;
 
+    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "username")
     private User user;

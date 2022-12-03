@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class Meeting implements Serializable {
     private String description;
     private String protocol;
 
+    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "project_id")
     private Project project;
