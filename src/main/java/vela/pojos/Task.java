@@ -27,7 +27,7 @@ public class Task implements Serializable {
 
     @Column(name = "finished_date")
     private LocalDate finishedDate;
-    private String description;
+    private String category;
     private String title;
 
     @ManyToOne()
