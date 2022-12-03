@@ -1,7 +1,14 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link :to="{ name: 'taskmanager' }">Tasks</router-link>
+    <br>
+    <router-link :to="{ name: 'projects' }">Projekte</router-link>
+    <br>
+    <router-link :to="{ name: 'calendar' }">Kalender</router-link>
+    <br>
+    <router-link :to="{ name: 'friends' }">Freunde</router-link>
+    <br>
+    <router-link :to="{ name: 'profile' }">Profil</router-link>
   </nav>
   <router-view/>
 </template>
