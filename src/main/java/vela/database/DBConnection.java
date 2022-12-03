@@ -96,8 +96,8 @@ public class DBConnection {
         if(!task.getTitle().isEmpty()){
             updatedTask.setTitle(task.getTitle());
         }
-        if(!task.getDescription().isEmpty()){
-            updatedTask.setDescription(task.getDescription());
+        if(!task.getCategory().isEmpty()){
+            updatedTask.setCategory(task.getCategory());
         }
         em.getTransaction().begin();
         em.merge(updatedTask);
