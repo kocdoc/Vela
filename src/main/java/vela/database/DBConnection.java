@@ -109,6 +109,7 @@ public class DBConnection {
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         dbConnection.addUserWithTasks();
+//        dbConnection.getTaskList("admin");
         dbConnection.disconnect();
     }
 
