@@ -26,7 +26,7 @@ public class ProjectResource {
         try{
             Project myProject = new Project(project.getDescription(), project.getName());
             dbConnection.addProjectToDatabase(myProject, username);
-            return ResponseEntity.ok("task added");
+            return ResponseEntity.ok("project added");
         } catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username does not exist");
         }
