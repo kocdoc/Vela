@@ -1,16 +1,14 @@
-package vela.controller;
+package vela.resource;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vela.database.DBConnection;
 import vela.pojos.User;
-import vela.queries.UserQueries;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 
@@ -18,14 +16,16 @@ import javax.management.openmbean.KeyAlreadyExistsException;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Slf4j
-@RequestMapping("/register")
-public class RegisterController {
+@RequestMapping("/api/register")
+public class RegisterResource {
+
+    DBConnection dbConnection = DBConnection.getInstance();
 
     @PostMapping
     public ResponseEntity register(@RequestBody User user){
         try{
             log.info(user.toString());
-            UserQueries.addUser(user);
+            dbConnection.addUser(user);
             log.info("user registered");
             return ResponseEntity.ok().body("registered");
         } catch(KeyAlreadyExistsException ex) {

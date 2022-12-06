@@ -1,24 +1,16 @@
-package vela.controller;
+package vela.resource;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
-//import jakarta.ws.rs.Consumes;
-//import jakarta.ws.rs.POST;
-//import jakarta.ws.rs.Produces;
-//import jakarta.ws.rs.core.MediaType;
-//import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import vela.database.DBConnection;
 import vela.pojos.LoginData;
 import vela.pojos.User;
-import vela.queries.UserQueries;
 
 import java.util.Map;
 
@@ -26,8 +18,10 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Slf4j
-@RequestMapping("/login")
-public class LoginController {
+@RequestMapping("/api/login")
+public class LoginResource {
+
+    DBConnection dbConnection = DBConnection.getInstance();
 
     public static final String JWT_SECRET = "adhjklukjkhsp85768qt6576845uhgihauiw%%%$";
 
@@ -43,7 +37,7 @@ public class LoginController {
     @PostMapping
     public ResponseEntity login(@RequestBody LoginData loginData) {
         log.info(loginData.toString());
-        User user = UserQueries.login(loginData.getUsername(), loginData.getPassword());
+        User user = dbConnection.login(loginData.getUsername(), loginData.getPassword());
         if (user == null){
             log.info("status: unauthorized");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized - wrong password");
