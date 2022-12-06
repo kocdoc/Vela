@@ -40,7 +40,7 @@ public class LoginResource {
         User user = dbConnection.login(loginData.getUsername(), loginData.getPassword());
         if (user == null){
             log.info("status: unauthorized");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized - wrong password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized - wrong username or password");
         }
         try{
             log.info("status: authorized");

@@ -1,9 +1,6 @@
 package vela.database;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 import vela.pojos.Project;
 import vela.pojos.Task;
@@ -117,16 +114,26 @@ public class DBConnection {
 
     public User getUserByUsername(String username){
         connect();
-        User user = em.createNamedQuery("user.getUserByUsername", User.class).setParameter("username", username).getSingleResult();
+        User user = null;
+        try{
+            user = em.createNamedQuery("user.getUserByUsername", User.class).setParameter("username", username).getSingleResult();
+        } catch(NoResultException e){
+            user = null;
+        }
+
         disconnect();
         return user;
     }
 
     public User login(String username, String password){
         User user = getUserByUsername(username);
-        if(user.getPassword().equals(password)){
-            return user;
-        } else{
+        try{
+            if(user.getPassword().equals(password)){
+                return user;
+            } else{
+                return null;
+            }
+        } catch(NullPointerException e){
             return null;
         }
     }
@@ -151,7 +158,7 @@ public class DBConnection {
         return users;
     }
 
-    public void addProjectToDatabase(Project project){
+    public void addProjectToDatabase(Project project, String username){
 
     }
 }
