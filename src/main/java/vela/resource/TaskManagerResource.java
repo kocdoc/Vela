@@ -20,7 +20,7 @@ public class TaskManagerResource {
 
     private DBConnection instance = DBConnection.getInstance();
 
-    @GetMapping("/getTasks")
+    @PostMapping("/getTasks")
     public List<Task> getTasks(@RequestParam(value="username") String username,@RequestBody String sortType){
         List<Task> tasksList;
         tasksList = instance.getTaskList(username, sortType);

@@ -6,12 +6,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Locale;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,4 +44,7 @@ public class Task implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @Transient
+    private Long projectID;
 }

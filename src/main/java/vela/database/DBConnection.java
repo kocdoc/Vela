@@ -44,9 +44,9 @@ public class DBConnection {
 
     private void addUserWithTasks() {
         List<Task> taskList = new ArrayList<>();
-        taskList.add(new Task(null, LocalDate.now(), null, "Description1", "Title1", null, null));
-        taskList.add(new Task(null, LocalDate.now(), null, "Description2", "Title2", null, null));
-        taskList.add(new Task(null, LocalDate.now(), null, "Description3", "Title3", null, null));
+        taskList.add(new Task(null, LocalDate.now(), null, "Description1", "Title1", null, null,null));
+        taskList.add(new Task(null, LocalDate.now(), null, "Description2", "Title2", null, null,null));
+        taskList.add(new Task(null, LocalDate.now(), null, "Description3", "Title3", null, null,null));
         User user = new User("admin", "admin", "admin", "admin@gmail.com", "admin", null, null, null, null, null);
         user.setTaskList(taskList);
         taskList.forEach(task -> task.setUser(user));
