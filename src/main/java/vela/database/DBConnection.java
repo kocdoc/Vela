@@ -178,10 +178,25 @@ public class DBConnection {
         em.getTransaction().commit();
     }
 
+    public void editProject(Project editedProject){
+        if(!getAllProjects().contains(editedProject)){
+            throw new NoSuchElementException("project does not exist");
+        }
+        connect();
+        em.merge(editedProject);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
+
+    public List<Project> getAllProjects(){
+        return em.createNamedQuery("Project.getAll").getResultList();
+    }
+
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         dbConnection.connect();
-        dbConnection.addProjectToDatabase(new Project("TestProject2", "tp2"), "jartoc17");
+        dbConnection.editProject(new Project(101, "changedProject2", "tp2", null, null));
+//        dbConnection.addProjectToDatabase(new Project("TestProject2", "tp2"), "jartoc17");
 //        dbConnection.addUserWithTasks();
 //        dbConnection.getTaskList("admin");
 //        dbConnection.disconnect();

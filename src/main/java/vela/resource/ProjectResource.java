@@ -31,4 +31,14 @@ public class ProjectResource {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username does not exist");
         }
     }
+
+    @PostMapping("/editProject")
+    public ResponseEntity editProject(@RequestBody Project editedProject){
+        try{
+            dbConnection.editProject(editedProject);
+            return ResponseEntity.ok("project " + editedProject.getProjectID() + " edited");
+        } catch(NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("project does not exist");
+        }
+    }
 }

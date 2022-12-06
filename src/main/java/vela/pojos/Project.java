@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@AllArgsConstructor
+@Entity(name = "project")
 @NoArgsConstructor
 @Data
+@NamedQueries({
+        @NamedQuery(name = "Project.getAll", query = "SELECT p FROM project p")
+})
 public class Project implements Serializable {
     @Id
     @Column(name = "project_id")
@@ -36,6 +38,22 @@ public class Project implements Serializable {
         this.name = name;
         userList = new ArrayList<>();
         meetingList = new ArrayList<>();
+    }
+
+    public Project(Integer projectID, String description, String name, List<User> userList, List<Meeting> meetingList) {
+        this.projectID = projectID;
+        this.description = description;
+        this.name = name;
+        if(userList == null){
+            this.userList = new ArrayList<>();
+        } else{
+            this.userList = userList;
+        }
+        if(meetingList == null){
+            this.meetingList = new ArrayList<>();
+        } else{
+            this.meetingList = meetingList;
+        }
     }
 
     public void addUser(User user){
