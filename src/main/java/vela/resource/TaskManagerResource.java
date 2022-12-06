@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vela.database.DBConnection;
 import vela.pojos.Task;
+import vela.pojos.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -49,7 +50,7 @@ public class TaskManagerResource {
         if (!tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()) {
             tasksList.add(task);
             instance.addTaskToDatabase(task,username);
-            return ResponseEntity.status(HttpStatus.CREATED).body(task.getUser().toString());
+            return ResponseEntity.status(HttpStatus.CREATED).body(task.toString());
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Task already exists");
     }
@@ -79,6 +80,7 @@ public class TaskManagerResource {
         System.out.println(tasksList);
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()){
+            System.out.println("is present");
             instance.updateTaskFromDatabase(task, username);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(task.toString());
         }
