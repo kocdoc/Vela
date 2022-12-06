@@ -4,13 +4,17 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
+import lombok.extern.slf4j.Slf4j;
+import vela.pojos.Project;
 import vela.pojos.Task;
 import vela.pojos.User;
 
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class DBConnection {
 
     private static DBConnection instance;
@@ -113,5 +117,43 @@ public class DBConnection {
         dbConnection.disconnect();
     }
 
+    public User getUserByUsername(String username){
+        connect();
+        User user = em.createNamedQuery("user.getUserByUsername", User.class).setParameter("username", username).getSingleResult();
+        disconnect();
+        return user;
+    }
 
+    public User login(String username, String password){
+        User user = getUserByUsername(username);
+        if(user.getPassword().equals(password)){
+            return user;
+        } else{
+            return null;
+        }
+    }
+
+    public void addUser(User user) throws KeyAlreadyExistsException {
+        if(!getAllUsers().contains(user)){
+            connect();
+            em.persist(user);
+            em.getTransaction().begin();
+            em.getTransaction().commit();
+            disconnect();
+        } else{
+            log.info("username already exists");
+            throw new KeyAlreadyExistsException("username already exists");
+        }
+    }
+
+    public List<User> getAllUsers(){
+        connect();
+        List<User> users = em.createNamedQuery("user.getAllUsers", User.class).getResultList();
+        disconnect();
+        return users;
+    }
+
+    public void addProjectToDatabase(Project project){
+
+    }
 }

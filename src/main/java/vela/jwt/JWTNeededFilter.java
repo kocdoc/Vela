@@ -9,7 +9,7 @@ import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
-import vela.controller.LoginController;
+import vela.resource.LoginResource;
 
 @Provider
 @Priority(Priorities.AUTHORIZATION)
@@ -23,7 +23,7 @@ public class JWTNeededFilter implements ContainerRequestFilter {
         try{
             jwsStr = jwsStr.replace("Bearer", "");
             JWSObject jwsObject = JWSObject.parse(jwsStr);
-            boolean verified = jwsObject.verify(new MACVerifier(LoginController.JWT_SECRET));
+            boolean verified = jwsObject.verify(new MACVerifier(LoginResource.JWT_SECRET));
             if(verified){
                 containerRequestContext.setProperty("user", jwsObject.getPayload());
             } else{

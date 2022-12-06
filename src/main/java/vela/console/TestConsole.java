@@ -3,8 +3,6 @@ package vela.console;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import vela.pojos.User;
-import vela.queries.UserQueries;
 
 
 public class TestConsole {
