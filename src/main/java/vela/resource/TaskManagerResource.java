@@ -1,12 +1,14 @@
 package vela.resource;
 
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vela.database.DBConnection;
 import vela.pojos.Task;
-import vela.pojos.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,10 +21,10 @@ public class TaskManagerResource {
     private DBConnection instance = DBConnection.getInstance();
 
     @GetMapping("/getTasks")
-    public List<Task> getTasks(@RequestParam(value="username") String username){
+    public List<Task> getTasks(@RequestParam(value="username") String username,@RequestBody String sortType){
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username);
-
+        tasksList = instance.getTaskList(username, sortType);
+        System.out.println(sortType);
         System.out.println(tasksList);
 
         tasksList.stream().forEach(task -> task.setUser(null));
@@ -39,10 +41,12 @@ public class TaskManagerResource {
        return task;
     }
 
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @PostMapping("/addTask")
-    public ResponseEntity<String> addNewTask(@RequestBody Task task, @RequestParam(value="username") String username){
+    public ResponseEntity addNewTask(@RequestBody Task task, @RequestParam(value="username") String username){
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username);
+        tasksList = instance.getTaskList(username, null);
 
         log.info(task.toString());
         System.out.println(tasksList);
@@ -50,7 +54,7 @@ public class TaskManagerResource {
         if (!tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()) {
             tasksList.add(task);
             instance.addTaskToDatabase(task,username);
-            return ResponseEntity.status(HttpStatus.CREATED).body(task.toString());
+            return ResponseEntity.status(HttpStatus.CREATED).body(task);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Task already exists");
     }
@@ -58,7 +62,7 @@ public class TaskManagerResource {
     @DeleteMapping("/deleteTask")
     public ResponseEntity<String> deleteTask(@RequestBody Task task, @RequestParam(value="username") String username){
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username);
+        tasksList = instance.getTaskList(username, null);
 
         log.info(task.toString());
         System.out.println(tasksList);
@@ -74,7 +78,7 @@ public class TaskManagerResource {
     @PatchMapping("/updateTask")
     public ResponseEntity<String> updateTask(@RequestBody Task task, @RequestParam(value="username") String username){
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username);
+        tasksList = instance.getTaskList(username, null);
 
         log.info(task.toString());
         System.out.println(tasksList);
@@ -90,7 +94,7 @@ public class TaskManagerResource {
     @PutMapping("/finishTask")
     public ResponseEntity<String> finishTask(@RequestBody Task task,@RequestParam(value="username") String username){
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username);
+        tasksList = instance.getTaskList(username, null);
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()) {
             tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().get().setFinishedDate(LocalDate.now());

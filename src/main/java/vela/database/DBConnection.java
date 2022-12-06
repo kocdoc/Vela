@@ -7,6 +7,7 @@ import vela.pojos.Task;
 import vela.pojos.User;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +43,9 @@ public class DBConnection {
 
     private void addUserWithTasks() {
         List<Task> taskList = new ArrayList<>();
-        taskList.add(new Task(null, LocalDateTime.now(), null, "Description1", "Title1", null, null));
-        taskList.add(new Task(null, LocalDateTime.now(), null, "Description2", "Title2", null, null));
-        taskList.add(new Task(null, LocalDateTime.now(), null, "Description3", "Title3", null, null));
+        taskList.add(new Task(null, LocalDate.now(), null, "Description1", "Title1", null, null));
+        taskList.add(new Task(null, LocalDate.now(), null, "Description2", "Title2", null, null));
+        taskList.add(new Task(null, LocalDate.now(), null, "Description3", "Title3", null, null));
         User user = new User("admin", "admin", "admin", "admin@gmail.com", "admin", null, null, null, null, null);
         user.setTaskList(taskList);
         taskList.forEach(task -> task.setUser(user));
@@ -54,8 +55,16 @@ public class DBConnection {
     }
 
 
-    public List<Task> getTaskList(String username){
-        TypedQuery<Task> taskTypedQuery = em.createNamedQuery("Task.getAllTasks", Task.class);
+    public List<Task> getTaskList(String username, String sortTyp){
+        TypedQuery<Task> taskTypedQuery;
+        if(sortTyp == "deadline"){
+            taskTypedQuery = em.createNamedQuery("Task.getAllTasks", Task.class);
+        } else if (sortTyp == "category") {
+            taskTypedQuery = em.createNamedQuery("Task.SortedByCategory", Task.class);
+        }
+        else{
+            taskTypedQuery = em.createNamedQuery("Task.SortedByTitle", Task.class);
+        }
         taskTypedQuery.setParameter("username",username);
         return taskTypedQuery.getResultList();
     }
@@ -99,6 +108,9 @@ public class DBConnection {
         }
         if(!task.getCategory().isEmpty()){
             updatedTask.setCategory(task.getCategory());
+        }
+        if(task.getDeadline() != null){
+            updatedTask.setDeadline(task.getDeadline());
         }
         em.persist(updatedTask);
         em.getTransaction().begin();
