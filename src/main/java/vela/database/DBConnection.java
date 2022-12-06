@@ -99,11 +99,9 @@ public class DBConnection {
         if(!task.getCategory().isEmpty()){
             updatedTask.setCategory(task.getCategory());
         }
+        em.persist(updatedTask);
         em.getTransaction().begin();
-        em.merge(updatedTask);
         em.getTransaction().commit();
-
-
     }
 
     public static void main(String[] args) {

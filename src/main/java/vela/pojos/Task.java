@@ -32,11 +32,9 @@ public class Task implements Serializable {
 
     @ManyToOne()
     @JoinColumn(name = "username")
-    @ToString.Exclude
     private User user;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "project_id")
-    @ToString.Exclude
     private Project project;
 }
