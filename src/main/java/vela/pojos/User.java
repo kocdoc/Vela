@@ -62,6 +62,12 @@ public class User implements Serializable {
     @ToString.Exclude
     private List<Event> eventList;
 
+    private void addProject(Project project){
+        if(!projectList.contains(project)){
+            projectList.add(project);
+        }
+    }
+
     public User(String username, String firstname, String lastname, String email, String password) {
         this.username = username;
         this.firstname = firstname;

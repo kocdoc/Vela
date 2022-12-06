@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 public class DBConnection {
@@ -117,13 +118,6 @@ public class DBConnection {
         em.getTransaction().commit();
     }
 
-    public static void main(String[] args) {
-        DBConnection dbConnection = DBConnection.getInstance();
-        dbConnection.addUserWithTasks();
-//        dbConnection.getTaskList("admin");
-        dbConnection.disconnect();
-    }
-
     public User getUserByUsername(String username){
         connect();
         User user = null;
@@ -171,6 +165,25 @@ public class DBConnection {
     }
 
     public void addProjectToDatabase(Project project, String username){
+        User user = em.find(User.class, username);
+        connect();
+        project.addUser(user);
+        try{
+            user.getProjectList().add(project);
+        } catch (NullPointerException e){
+            throw new NoSuchElementException("user does not exist");
+        }
+        em.merge(user);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
 
+    public static void main(String[] args) {
+        DBConnection dbConnection = DBConnection.getInstance();
+        dbConnection.connect();
+        dbConnection.addProjectToDatabase(new Project("TestProject2", "tp2"), "jartoc17");
+//        dbConnection.addUserWithTasks();
+//        dbConnection.getTaskList("admin");
+//        dbConnection.disconnect();
     }
 }

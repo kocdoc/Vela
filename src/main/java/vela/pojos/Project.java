@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @AllArgsConstructor
@@ -28,4 +30,33 @@ public class Project implements Serializable {
     @OneToMany(mappedBy = "project")
     @ToString.Exclude
     private List<Meeting> meetingList;
+
+    public Project(String description, String name) {
+        this.description = description;
+        this.name = name;
+        userList = new ArrayList<>();
+        meetingList = new ArrayList<>();
+    }
+
+    public void addUser(User user){
+        if(!userList.contains(user)){
+            userList.add(user);
+        }
+    }
+
+    public void addMeeting(Meeting meeting){
+        meetingList.add(meeting);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Project project)) return false;
+        return Objects.equals(getProjectID(), project.getProjectID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getProjectID());
+    }
 }
