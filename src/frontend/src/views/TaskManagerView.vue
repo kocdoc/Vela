@@ -16,26 +16,72 @@ export default {
     }
   },
   mounted () {
-    fetch('/api/taskmanager/getTasks?username=admin')
+    console.log('sdfhh')
+    fetch('/api/taskmanager/getTasks?username=admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify('sortType: filter')
+    })
       .then((response) => { return response.json() })
       .then(data => {
         data.forEach(task => {
           console.log(task)
           this.todos.push(task)
         })
+        this.sortTodos('category')
       })
   },
   methods: {
+    sortTodos (sortType) {
+      switch (sortType) {
+        case 'title':
+          console.log('Hier bin ich')
+          this.todos.sort((a, b) => {
+            const t1 = a.title.toLowerCase()
+            const t2 = b.title.toLowerCase()
+            if (t1 < t2) {
+              return -1
+            }
+            if (t1 > t2) {
+              return 1
+            }
+            return 0
+          })
+          console.log(this.todos)
+          break
+        case 'category':
+          this.todos.sort((a, b) => {
+            const c1 = a.category.toLowerCase()
+            const c2 = b.category.toLowerCase()
+            if (c1 < c2) {
+              return -1
+            }
+            if (c1 > c2) {
+              return 1
+            }
+            return 0
+          })
+          console.log(this.todos)
+          break
+        case 'deadline':
+      }
+    },
     addTodo () {
       const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, project: null, user: null }
-      this.todos.push(newTask)
+
       // fetch
       fetch('/api/taskmanager/addTask?username=admin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTask)
       })
-        .then((response) => { return console.log(response) })
+        .then((response) => {
+          console.log(response.json())
+          this.todos.push(response.json())
+          // console.log(this.todos.pop())
+          // console.log(response.json)
+          // return console.log(response.json)
+        })
         // .then(data => {
         //   data.forEach(task => {
         //     console.log(task)
@@ -58,13 +104,16 @@ export default {
       // todo fetch removeToDo
     },
     updateTitle (todo) {
-      console.log(todo)
+      console.log('Update:' + JSON.stringify(todo))
       fetch('/api/taskmanager/updateTask?username=admin', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo)
       })
-        .then((response) => { return console.log(response) })
+      // .then((response) => {
+      //   // this.todos.push(response.json)
+      //   // return console.log(response)
+      // })
       // alert('Todo has changed:' + todo.category)
       //  ToDo fetch updateTodo
     }
@@ -131,11 +180,11 @@ export default {
 
     <br>
 
-    <div style="text-align: left">
-      <button @click="hideCompleted = !hideCompleted">
-        {{ hideCompleted ? 'Abgeschlossene Tasks einblenden' : 'Abgeschlossene Tasks ausblenden' }}
-      </button>
-    </div>
+<!--    <div style="text-align: left">-->
+<!--      <button @click="hideCompleted = !hideCompleted">-->
+<!--        {{ hideCompleted ? 'Abgeschlossene Tasks einblenden' : 'Abgeschlossene Tasks ausblenden' }}-->
+<!--      </button>-->
+<!--    </div>-->
 
 <!--    <div class="pagination">-->
 <!--      <nav aria-label="Page navigation example">-->

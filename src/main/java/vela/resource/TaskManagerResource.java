@@ -20,7 +20,7 @@ public class TaskManagerResource {
 
     private DBConnection instance = DBConnection.getInstance();
 
-    @GetMapping("/getTasks")
+    @PostMapping("/getTasks")
     public List<Task> getTasks(@RequestParam(value="username") String username,@RequestBody String sortType){
         List<Task> tasksList;
         tasksList = instance.getTaskList(username, sortType);
@@ -64,7 +64,7 @@ public class TaskManagerResource {
         List<Task> tasksList;
         tasksList = instance.getTaskList(username, null);
 
-        log.info(task.toString());
+        log.info("Help: task: "+  task.toString());
         System.out.println(tasksList);
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()){
@@ -80,8 +80,11 @@ public class TaskManagerResource {
         List<Task> tasksList;
         tasksList = instance.getTaskList(username, null);
 
-        log.info(task.toString());
+
+
+        log.info("Help: update" + task.toString());
         System.out.println(tasksList);
+        log.info((tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().toString()));
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()){
             System.out.println("is present");
