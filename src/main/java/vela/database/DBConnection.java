@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 public class DBConnection {
@@ -43,9 +44,9 @@ public class DBConnection {
 
     private void addUserWithTasks() {
         List<Task> taskList = new ArrayList<>();
-        taskList.add(new Task(null, LocalDate.now(), null, "Description1", "Title1", null, null));
-        taskList.add(new Task(null, LocalDate.now(), null, "Description2", "Title2", null, null));
-        taskList.add(new Task(null, LocalDate.now(), null, "Description3", "Title3", null, null));
+        taskList.add(new Task(null, LocalDate.now(), null, "Description1", "Title1", null, null,null));
+        taskList.add(new Task(null, LocalDate.now(), null, "Description2", "Title2", null, null,null));
+        taskList.add(new Task(null, LocalDate.now(), null, "Description3", "Title3", null, null,null));
         User user = new User("admin", "admin", "admin", "admin@gmail.com", "admin", null, null, null, null, null);
         user.setTaskList(taskList);
         taskList.forEach(task -> task.setUser(user));
@@ -117,13 +118,6 @@ public class DBConnection {
         em.getTransaction().commit();
     }
 
-    public static void main(String[] args) {
-        DBConnection dbConnection = DBConnection.getInstance();
-        dbConnection.addUserWithTasks();
-//        dbConnection.getTaskList("admin");
-        dbConnection.disconnect();
-    }
-
     public User getUserByUsername(String username){
         connect();
         User user = null;
@@ -171,6 +165,40 @@ public class DBConnection {
     }
 
     public void addProjectToDatabase(Project project, String username){
+        User user = em.find(User.class, username);
+        connect();
+        project.addUser(user);
+        try{
+            user.getProjectList().add(project);
+        } catch (NullPointerException e){
+            throw new NoSuchElementException("user does not exist");
+        }
+        em.merge(user);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
 
+    public void editProject(Project editedProject){
+        if(!getAllProjects().contains(editedProject)){
+            throw new NoSuchElementException("project does not exist");
+        }
+        connect();
+        em.merge(editedProject);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
+
+    public List<Project> getAllProjects(){
+        return em.createNamedQuery("Project.getAll").getResultList();
+    }
+
+    public static void main(String[] args) {
+        DBConnection dbConnection = DBConnection.getInstance();
+        dbConnection.connect();
+        dbConnection.editProject(new Project(101, "changedProject2", "tp2", null, null));
+//        dbConnection.addProjectToDatabase(new Project("TestProject2", "tp2"), "jartoc17");
+//        dbConnection.addUserWithTasks();
+//        dbConnection.getTaskList("admin");
+//        dbConnection.disconnect();
     }
 }
