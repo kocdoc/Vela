@@ -64,6 +64,19 @@ export default {
           console.log(this.todos)
           break
         case 'deadline':
+          this.todos.sort((a, b) => {
+            const d1 = a.deadline
+            const d2 = b.deadline
+            if (d1 < d2) {
+              return -1
+            }
+            if (d1 > d2) {
+              return 1
+            }
+            return 0
+          })
+          console.log(this.todos)
+          break
       }
     },
     addTodo () {
@@ -131,13 +144,13 @@ export default {
           <th scope="col" class="p-4">
             <button @click="addTodo">+</button>
           </th>
-          <th scope="col" class="py-3 px-6">
+          <th scope="col" class="py-3 px-6" @click="sortTodos('title')">
             Titel
           </th>
-          <th scope="col" class="py-3 px-6">
+          <th scope="col" class="py-3 px-6" @click="sortTodos('category')">
             Kategorie
           </th>
-          <th scope="col" class="py-3 px-6">
+          <th scope="col" class="py-3 px-6" @click="sortTodos('deadline')">
             Deadline
           </th>
           <th scope="col" class="py-3 px-6">
