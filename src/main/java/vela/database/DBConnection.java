@@ -195,10 +195,10 @@ public class DBConnection {
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         dbConnection.connect();
-        dbConnection.editProject(new Project(101, "changedProject2", "tp2", null, null));
+      //  dbConnection.editProject(new Project(101, "changedProject2", "tp2", null, null));
 //        dbConnection.addProjectToDatabase(new Project("TestProject2", "tp2"), "jartoc17");
-//        dbConnection.addUserWithTasks();
+        dbConnection.addUserWithTasks();
 //        dbConnection.getTaskList("admin");
-//        dbConnection.disconnect();
+        dbConnection.disconnect();
     }
 }

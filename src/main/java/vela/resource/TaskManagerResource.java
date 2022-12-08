@@ -65,7 +65,7 @@ public class TaskManagerResource {
         tasksList = instance.getTaskList(username, null);
 
         log.info("Help: task: "+  task.toString());
-        System.out.println(tasksList);
+        tasksList.stream().forEach(task1 -> System.out.println(task1));
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()){
             tasksList.removeIf(task1 -> task1.getTaskID() == task.getTaskID());
