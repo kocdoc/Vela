@@ -51,6 +51,7 @@ public class DBConnection {
         User user = new User("admin", "admin", "admin", "admin@gmail.com", "admin", null, null, null, null, null);
         user.setTaskList(taskList);
         taskList.forEach(task -> task.setUser(user));
+//        taskList.forEach(task -> em.persist(task));
         em.persist(user);
         em.getTransaction().begin();
         em.getTransaction().commit();
@@ -111,9 +112,12 @@ public class DBConnection {
         if(!task.getCategory().isEmpty()){
             updatedTask.setCategory(task.getCategory());
         }
-        if(task.getDeadline() != null){
+//        if(task.getDeadline() != null){
             updatedTask.setDeadline(task.getDeadline());
-        }
+//        }
+//        if(task.getFinishedDate() != null){
+            updatedTask.setFinishedDate(task.getFinishedDate());
+//        }
         em.persist(updatedTask);
         em.getTransaction().begin();
         em.getTransaction().commit();

@@ -67,7 +67,7 @@ public class TaskManagerResource {
         log.info("Help: task: "+  task.toString());
         tasksList.stream().forEach(task1 -> System.out.println(task1));
 
-        if(tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()){
+        if(tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()){
             tasksList.removeIf(task1 -> task1.getTaskID().equals(task.getTaskID()));
             instance.removeTaskFromDatabase(task,username);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(task.toString());
@@ -108,6 +108,14 @@ public class TaskManagerResource {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(task.toString());
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Task not found");
+    }
+
+    public static void main(String[] args) {
+        TaskManagerResource test = new TaskManagerResource();
+
+//        System.out.println(test.addNewTask(new Task(null, LocalDate.now(),null, "sdf", "Tid", null, null, 0L), "admin"));
+
+//        test.updateTask(new Task(201, LocalDate.now(),null, "sdf", "Tiasdasfd", null, null, 0L), "admin");
     }
 
 
