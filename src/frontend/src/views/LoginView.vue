@@ -3,8 +3,8 @@ export default {
   username: 'LoginView',
   data () {
     return {
-      username: 'matthias',
-      password: 'sdf'
+      username: 'admin',
+      password: 'admin'
     }
   },
   methods: {
@@ -20,11 +20,17 @@ export default {
       })
         .then((response) => {
           if (response.status === 200) {
-            this.$router.push('taskmanager')
+            return response.json()
           } else {
             alert('Anmeldedaten nicht korrekt')
           }
-          return console.log(response)
+        })
+        .then(jsonData => {
+          // console.log('Data' + jsonData)
+          // console.log('Token ' + jsonData.token)
+          localStorage.setItem('user_token', jsonData.token)
+          localStorage.setItem('username', jsonData.username)
+          this.$router.push('taskmanager')
         })
     }
   }

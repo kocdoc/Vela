@@ -4,7 +4,12 @@
 
 <script>
 export default {
-  name: 'CalenderView'
+  name: 'CalenderView',
+  mounted () {
+    if (localStorage.getItem('user_token') == null) {
+      this.$router.push('login')
+    }
+  }
 }
 </script>
 

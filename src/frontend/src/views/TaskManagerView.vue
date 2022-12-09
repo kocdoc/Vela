@@ -19,7 +19,11 @@ export default {
     }
   },
   mounted () {
-    fetch('/api/taskmanager/getTasks?username=admin', {
+    if (localStorage.getItem('user_token') == null) {
+      this.$router.push('login')
+    }
+
+    fetch('/api/taskmanager/getTasks?username=' + localStorage.getItem('username'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify('sortType: ' + this.sortType)
@@ -87,7 +91,7 @@ export default {
     addTodo () {
       const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, project: null, user: null }
 
-      fetch('/api/taskmanager/addTask?username=admin', {
+      fetch('/api/taskmanager/addTask?username=' + localStorage.getItem('username'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTask)
@@ -96,7 +100,7 @@ export default {
         .then(jsonData => this.todos.push(jsonData))
     },
     removeTodo (todo) {
-      fetch('/api/taskmanager/deleteTask?username=admin', {
+      fetch('/api/taskmanager/deleteTask?username=' + localStorage.getItem('username'), {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo)
@@ -106,7 +110,7 @@ export default {
     },
     updateTask (todo) {
       console.log('Update:' + JSON.stringify(todo))
-      fetch('/api/taskmanager/updateTask?username=admin', {
+      fetch('/api/taskmanager/updateTask?username=' + localStorage.getItem('username'), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo)
