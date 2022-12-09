@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import vela.pojos.Project;
 import vela.pojos.Task;
 import vela.pojos.User;
+import vela.resource.TaskManagerResource;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDate;
@@ -193,12 +194,15 @@ public class DBConnection {
     }
 
     public static void main(String[] args) {
-        DBConnection dbConnection = DBConnection.getInstance();
-        dbConnection.connect();
+       // DBConnection dbConnection = DBConnection.getInstance();
+       // dbConnection.connect();
+        TaskManagerResource test = new TaskManagerResource();
+        //test.addNewTask(new Task(300, LocalDate.now(),null, "sdf", "Tid", null, null, 0L), "admin");
+        test.updateTask(new Task(300, LocalDate.now(),null, "sdf", "Tiasdasfd", null, null, 0L), "admin");
       //  dbConnection.editProject(new Project(101, "changedProject2", "tp2", null, null));
 //        dbConnection.addProjectToDatabase(new Project("TestProject2", "tp2"), "jartoc17");
-        dbConnection.addUserWithTasks();
+  //      dbConnection.addUserWithTasks();
 //        dbConnection.getTaskList("admin");
-        dbConnection.disconnect();
+//        dbConnection.disconnect();
     }
 }

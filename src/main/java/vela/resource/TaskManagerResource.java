@@ -51,7 +51,7 @@ public class TaskManagerResource {
         log.info(task.toString());
         System.out.println(tasksList);
 
-        if (!tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()) {
+        if (!tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()) {
             tasksList.add(task);
             instance.addTaskToDatabase(task,username);
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
@@ -68,7 +68,7 @@ public class TaskManagerResource {
         tasksList.stream().forEach(task1 -> System.out.println(task1));
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()){
-            tasksList.removeIf(task1 -> task1.getTaskID() == task.getTaskID());
+            tasksList.removeIf(task1 -> task1.getTaskID().equals(task.getTaskID()));
             instance.removeTaskFromDatabase(task,username);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(task.toString());
         }
@@ -80,13 +80,17 @@ public class TaskManagerResource {
         List<Task> tasksList;
         tasksList = instance.getTaskList(username, null);
 
+        //log.info("Help: update" + task.toString());
+        //System.out.println(tasksList);
+        //log.info((tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().toString()));
 
-
-        log.info("Help: update" + task.toString());
+        System.out.println("-------------------------");
+        System.out.println("UpdateTask");
+        System.out.println(task);
+        System.out.println(username);
         System.out.println(tasksList);
-        log.info((tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().toString()));
 
-        if(tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()){
+        if(tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()){
             System.out.println("is present");
             instance.updateTaskFromDatabase(task, username);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(task.toString());
@@ -99,8 +103,8 @@ public class TaskManagerResource {
         List<Task> tasksList;
         tasksList = instance.getTaskList(username, null);
 
-        if(tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().isPresent()) {
-            tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().get().setFinishedDate(LocalDate.now());
+        if(tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()) {
+            tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().get().setFinishedDate(LocalDate.now());
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(task.toString());
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Task not found");
