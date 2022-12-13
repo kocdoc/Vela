@@ -25,13 +25,11 @@ public class TaskManagerResource {
     private DBConnection instance = DBConnection.getInstance();
 
     @PostMapping("/getTasks")
-    public List<Task> getTasks(@RequestParam(value="username") String username,@RequestBody ObjectNode objectNode) throws ParseException {
-        String jwt = objectNode.get("jwt").toString();
-        String sortType = objectNode.get("sortType").toString();
+    public List<Task> getTasks(@RequestParam(value="user") String user,@RequestBody String sortType) throws ParseException {
         List<Task> tasksList;
-        String jwtUser = JWTNeededFilter.getUsername(jwt);
-        tasksList = instance.getTaskList(jwtUser, sortType);
-        System.out.println(sortType);
+
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), sortType);
+
         System.out.println(tasksList);
 
         tasksList.stream().forEach(task -> task.setUser(null));
@@ -51,64 +49,60 @@ public class TaskManagerResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @PostMapping("/addTask")
-    public ResponseEntity addNewTask(@RequestBody Task task, @RequestParam(value="username") String username){
+    public ResponseEntity addNewTask(@RequestBody Task task, @RequestParam(value="user") String user) throws ParseException {
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username, null);
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null);
 
         log.info(task.toString());
         System.out.println(tasksList);
 
         if (!tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()) {
             tasksList.add(task);
-            instance.addTaskToDatabase(task,username);
+            instance.addTaskToDatabase(task,JWTNeededFilter.getUsername(user));
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Task already exists");
     }
 
     @DeleteMapping("/deleteTask")
-    public ResponseEntity<String> deleteTask(@RequestBody Task task, @RequestParam(value="username") String username){
+    public ResponseEntity<String> deleteTask(@RequestBody Task task, @RequestParam(value="user") String user) throws ParseException {
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username, null);
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null);
 
         log.info("Help: task: "+  task.toString());
         tasksList.stream().forEach(task1 -> System.out.println(task1));
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()){
             tasksList.removeIf(task1 -> task1.getTaskID().equals(task.getTaskID()));
-            instance.removeTaskFromDatabase(task,username);
+            instance.removeTaskFromDatabase(task,JWTNeededFilter.getUsername(user));
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(task.toString());
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Task can not be deleted");
     }
 
     @PatchMapping("/updateTask")
-    public ResponseEntity<String> updateTask(@RequestBody Task task, @RequestParam(value="username") String username){
+    public ResponseEntity<String> updateTask(@RequestBody Task task, @RequestParam(value="user") String user) throws ParseException {
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username, null);
-
-        //log.info("Help: update" + task.toString());
-        //System.out.println(tasksList);
-        //log.info((tasksList.stream().filter(task1 -> task1.getTaskID() == task.getTaskID()).findFirst().toString()));
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null);
 
         System.out.println("-------------------------");
         System.out.println("UpdateTask");
         System.out.println(task);
-        System.out.println(username);
+        System.out.println(JWTNeededFilter.getUsername(user));
         System.out.println(tasksList);
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()){
             System.out.println("is present");
-            instance.updateTaskFromDatabase(task, username);
+            instance.updateTaskFromDatabase(task, JWTNeededFilter.getUsername(user));
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(task.toString());
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Task not available");
     }
 
     @PutMapping("/finishTask")
-    public ResponseEntity<String> finishTask(@RequestBody Task task,@RequestParam(value="username") String username){
+    public ResponseEntity<String> finishTask(@RequestBody Task task,@RequestParam(value="user") String user) throws ParseException {
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username, null);
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null);
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()) {
             tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().get().setFinishedDate(LocalDate.now());
@@ -119,10 +113,6 @@ public class TaskManagerResource {
 
     public static void main(String[] args) {
         TaskManagerResource test = new TaskManagerResource();
-
-//        System.out.println(test.addNewTask(new Task(null, LocalDate.now(),null, "sdf", "Tid", null, null, 0L), "admin"));
-
-//        test.updateTask(new Task(201, LocalDate.now(),null, "sdf", "Tiasdasfd", null, null, 0L), "admin");
     }
 
 
