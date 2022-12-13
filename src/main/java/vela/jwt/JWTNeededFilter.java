@@ -11,6 +11,8 @@ import jakarta.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
 import vela.resource.LoginResource;
 
+import java.text.ParseException;
+
 @Provider
 @Priority(Priorities.AUTHORIZATION)
 @JWTNeeded
@@ -33,5 +35,12 @@ public class JWTNeededFilter implements ContainerRequestFilter {
             log.info("verification failed");
             containerRequestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(e).build());
         }
+    }
+
+    public static String getUsername(String jwt) throws ParseException {
+        String jwtUser = jwt.replace("Bearer", "");
+        JWSObject jwsObject = JWSObject.parse(jwtUser);
+        return jwsObject.getPayload().toString();
+
     }
 }

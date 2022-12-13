@@ -1,5 +1,7 @@
 package vela.resource;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nimbusds.jose.JWSObject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -8,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vela.database.DBConnection;
+import vela.jwt.JWTNeededFilter;
 import vela.pojos.Task;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,9 +25,12 @@ public class TaskManagerResource {
     private DBConnection instance = DBConnection.getInstance();
 
     @PostMapping("/getTasks")
-    public List<Task> getTasks(@RequestParam(value="username") String username,@RequestBody String sortType){
+    public List<Task> getTasks(@RequestParam(value="username") String username,@RequestBody ObjectNode objectNode) throws ParseException {
+        String jwt = objectNode.get("jwt").toString();
+        String sortType = objectNode.get("sortType").toString();
         List<Task> tasksList;
-        tasksList = instance.getTaskList(username, sortType);
+        String jwtUser = JWTNeededFilter.getUsername(jwt);
+        tasksList = instance.getTaskList(jwtUser, sortType);
         System.out.println(sortType);
         System.out.println(tasksList);
 
