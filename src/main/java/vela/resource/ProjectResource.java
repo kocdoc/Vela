@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vela.database.DBConnection;
+import vela.jwt.JWTNeededFilter;
 import vela.pojos.Project;
 
+import java.text.ParseException;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -22,13 +24,16 @@ public class ProjectResource {
     DBConnection dbConnection = DBConnection.getInstance();
 
     @PostMapping("/addProject")
-    public ResponseEntity addProject(@RequestBody Project project, @RequestParam(value="username") String username){
+    public ResponseEntity addProject(@RequestBody Project project, @RequestParam(value="user") String jwt){
         try{
             Project myProject = new Project(project.getDescription(), project.getName());
+            String username = JWTNeededFilter.getUsername(jwt);
             dbConnection.addProjectToDatabase(myProject, username);
             return ResponseEntity.ok("project added");
         } catch (NoSuchElementException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username does not exist");
+        } catch (ParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("jwt not valid");
         }
     }
 

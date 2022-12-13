@@ -192,6 +192,5 @@ public class DBConnection {
         DBConnection dbConnection = DBConnection.getInstance();
         dbConnection.login("jartoc18", "geheim123");
         dbConnection.getTaskList("jartoc18", "title");
-        //u
     }
 }
