@@ -184,6 +184,15 @@ public class DBConnection {
         em.getTransaction().commit();
     }
 
+    public void editUserData(User editedUser){
+        if(!getAllUsers().contains(editedUser)){
+            throw new NoSuchElementException("user does not exist");
+        }
+        em.merge(editedUser);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
+
     public List<Project> getAllProjects(){
         return em.createNamedQuery("Project.getAll").getResultList();
     }
