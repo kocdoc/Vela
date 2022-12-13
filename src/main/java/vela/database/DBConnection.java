@@ -124,15 +124,12 @@ public class DBConnection {
     }
 
     public User getUserByUsername(String username){
-        connect();
         User user = null;
         try{
             user = em.createNamedQuery("user.getUserByUsername", User.class).setParameter("username", username).getSingleResult();
         } catch(NoResultException e){
             user = null;
         }
-
-        disconnect();
         return user;
     }
 
@@ -151,11 +148,9 @@ public class DBConnection {
 
     public void addUser(User user) throws KeyAlreadyExistsException {
         if(!getAllUsers().contains(user)){
-            connect();
             em.persist(user);
             em.getTransaction().begin();
             em.getTransaction().commit();
-            disconnect();
         } else{
             log.info("username already exists");
             throw new KeyAlreadyExistsException("username already exists");
@@ -163,15 +158,12 @@ public class DBConnection {
     }
 
     public List<User> getAllUsers(){
-        connect();
         List<User> users = em.createNamedQuery("user.getAllUsers", User.class).getResultList();
-        disconnect();
         return users;
     }
 
     public void addProjectToDatabase(Project project, String username){
         User user = em.find(User.class, username);
-        connect();
         project.addUser(user);
         try{
             user.getProjectList().add(project);
@@ -187,7 +179,6 @@ public class DBConnection {
         if(!getAllProjects().contains(editedProject)){
             throw new NoSuchElementException("project does not exist");
         }
-        connect();
         em.merge(editedProject);
         em.getTransaction().begin();
         em.getTransaction().commit();
@@ -198,15 +189,8 @@ public class DBConnection {
     }
 
     public static void main(String[] args) {
-       // DBConnection dbConnection = DBConnection.getInstance();
-       // dbConnection.connect();
-        TaskManagerResource test = new TaskManagerResource();
-        //test.addNewTask(new Task(300, LocalDate.now(),null, "sdf", "Tid", null, null, 0L), "admin");
-        test.updateTask(new Task(300, LocalDate.now(),null, "sdf", "Tiasdasfd", null, null, 0L), "admin");
-      //  dbConnection.editProject(new Project(101, "changedProject2", "tp2", null, null));
-//        dbConnection.addProjectToDatabase(new Project("TestProject2", "tp2"), "jartoc17");
-  //      dbConnection.addUserWithTasks();
-//        dbConnection.getTaskList("admin");
-//        dbConnection.disconnect();
+        DBConnection dbConnection = DBConnection.getInstance();
+        dbConnection.login("jartoc18", "geheim123");
+        dbConnection.getTaskList("jartoc18", "title");
     }
 }
