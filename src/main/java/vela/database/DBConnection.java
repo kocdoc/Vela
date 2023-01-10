@@ -210,6 +210,17 @@ public class DBConnection {
         return projects;
     }
 
+    public List<Task> getTasksOfProject(int projectId){
+        List<Project> projects = getAllProjects();
+        List<Task> tasks = new ArrayList<>();
+        projects.forEach(project -> {
+            if(project.getProjectID() == projectId){
+                tasks.addAll(project.getTaskList());
+            }
+        });
+        return tasks;
+    }
+
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         dbConnection.login("jartoc18", "geheim123");

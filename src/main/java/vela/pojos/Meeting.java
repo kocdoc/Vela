@@ -28,8 +28,8 @@ public class Meeting implements Serializable {
     private String description;
     private String protocol;
 
-    @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "project_id")
-    private Project project;
+//    @ToString.Exclude
+//    @ManyToOne(cascade = CascadeType.PERSIST)
+//    @JoinColumn(name = "project_id")
+//    private Project project;
 }

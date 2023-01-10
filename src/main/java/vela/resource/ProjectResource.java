@@ -57,4 +57,9 @@ public class ProjectResource {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("project does not exist");
         }
     }
+
+    @PostMapping("/getTasks")
+    public ResponseEntity getTasksOfProject(@RequestParam(value = "id") int projectId){
+        return ResponseEntity.ok(dbConnection.getTasksOfProject(projectId));
+    }
 }

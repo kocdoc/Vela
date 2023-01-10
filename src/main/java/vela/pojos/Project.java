@@ -34,16 +34,16 @@ public class Project implements Serializable {
 
     @OneToMany(mappedBy = "project")
     @ToString.Exclude
-    private List<Meeting> meetingList;
+    private List<Task> taskList;
 
     public Project(String description, String name) {
         this.description = description;
         this.name = name;
         userList = new ArrayList<>();
-        meetingList = new ArrayList<>();
+        taskList = new ArrayList<>();
     }
 
-    public Project(Integer projectID, String description, String name, List<User> userList, List<Meeting> meetingList) {
+    public Project(Integer projectID, String description, String name, List<User> userList, List<Task> taskList) {
         this.projectID = projectID;
         this.description = description;
         this.name = name;
@@ -52,10 +52,10 @@ public class Project implements Serializable {
         } else{
             this.userList = userList;
         }
-        if(meetingList == null){
-            this.meetingList = new ArrayList<>();
+        if(taskList == null){
+            this.taskList = new ArrayList<>();
         } else{
-            this.meetingList = meetingList;
+            this.taskList = taskList;
         }
     }
 
@@ -65,8 +65,8 @@ public class Project implements Serializable {
         }
     }
 
-    public void addMeeting(Meeting meeting){
-        meetingList.add(meeting);
+    public void addTask(Task task){
+        taskList.add(task);
     }
 
     @Override
