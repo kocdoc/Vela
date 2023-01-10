@@ -203,7 +203,7 @@ public class DBConnection {
         for(Project project : allProjects){
             project.getUserList().forEach(user -> {
                 if(user.getUsername().equals(username)){
-                    projects.add(project);
+                    projects.add(new Project(project.getProjectID(), project.getDescription(), project.getName()));
                 }
             });
         }

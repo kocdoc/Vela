@@ -1,10 +1,7 @@
 package vela.pojos;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import java.util.Objects;
 
 @Entity(name = "project")
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Data
 @NamedQueries({
         @NamedQuery(name = "Project.getAll", query = "SELECT p FROM project p")
@@ -21,8 +19,13 @@ public class Project implements Serializable {
     @Id
     @Column(name = "project_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @NonNull
     private Integer projectID;
+
+    @NonNull
     private String description;
+
+    @NonNull
     private String name;
 
     @ToString.Exclude

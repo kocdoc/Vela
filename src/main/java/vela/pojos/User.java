@@ -28,7 +28,7 @@ public class User implements Serializable {
     private String password;
 
     @ToString.Exclude
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "friend", joinColumns = {
             @JoinColumn(name = "own_username")
     }, inverseJoinColumns = {
