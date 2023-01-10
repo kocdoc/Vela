@@ -132,7 +132,7 @@ export default {
 
 <template>
   <!--  Task Table-->
-  <div class="task-table">
+  <div class="project-div">
     <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -140,7 +140,7 @@ export default {
           <th scope="col" class="p-4">
             <button @click="addTodo">+</button>
           </th>
-          <th scope="col" class="py-3 px-6" @click="sortTodos('title')">
+          <th scope="col" class="py-3 px-6 text-decoration: line-through" @click="sortTodos('title')">
             Titel
           </th>
           <th scope="col" class="py-3 px-6" @click="sortTodos('category')">
@@ -236,7 +236,7 @@ export default {
   text-align: center;
 }
 
-.task-table {
+.project-div {
   margin-left: 270px;
   margin-right: 30px;
   margin-top: 30px;
