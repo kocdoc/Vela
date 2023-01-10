@@ -12,6 +12,7 @@ import vela.jwt.JWTNeededFilter;
 import vela.pojos.Project;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -22,6 +23,16 @@ import java.util.NoSuchElementException;
 public class ProjectResource {
 
     DBConnection dbConnection = DBConnection.getInstance();
+
+    @PostMapping("/getProjects")
+    public ResponseEntity getProjectsByUser(@RequestParam(value = "user") String jwt){
+        try {
+            List<Project> projects = dbConnection.getProjectsByUser(JWTNeededFilter.getUsername(jwt));
+            return ResponseEntity.ok(projects);
+        } catch (ParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("jwt not valid");
+        }
+    }
 
     @PostMapping("/addProject")
     public ResponseEntity addProject(@RequestBody Project project, @RequestParam(value="user") String jwt){

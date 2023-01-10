@@ -197,6 +197,19 @@ public class DBConnection {
         return em.createNamedQuery("Project.getAll").getResultList();
     }
 
+    public List<Project> getProjectsByUser(String username){
+        List<Project> allProjects = getAllProjects();
+        List<Project> projects = new ArrayList<>();
+        for(Project project : allProjects){
+            project.getUserList().forEach(user -> {
+                if(user.getUsername().equals(username)){
+                    projects.add(project);
+                }
+            });
+        }
+        return projects;
+    }
+
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         dbConnection.login("jartoc18", "geheim123");
