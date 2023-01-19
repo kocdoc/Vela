@@ -28,7 +28,7 @@ public class TaskManagerResource {
     public List<Task> getTasks(@RequestParam(value="user") String user,@RequestBody String sortType) throws ParseException {
         List<Task> tasksList;
 
-        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), sortType);
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), sortType, null);
 
         System.out.println(tasksList);
 
@@ -51,7 +51,7 @@ public class TaskManagerResource {
     @PostMapping("/addTask")
     public ResponseEntity addNewTask(@RequestBody Task task, @RequestParam(value="user") String user) throws ParseException {
         List<Task> tasksList;
-        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null);
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null, task.getProjectID());
 
         log.info(task.toString());
         System.out.println(tasksList);
@@ -67,7 +67,7 @@ public class TaskManagerResource {
     @DeleteMapping("/deleteTask")
     public ResponseEntity<String> deleteTask(@RequestBody Task task, @RequestParam(value="user") String user) throws ParseException {
         List<Task> tasksList;
-        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null);
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null, task.getProjectID());
 
         log.info("Help: task: "+  task.toString());
         tasksList.stream().forEach(task1 -> System.out.println(task1));
@@ -83,7 +83,7 @@ public class TaskManagerResource {
     @PatchMapping("/updateTask")
     public ResponseEntity<String> updateTask(@RequestBody Task task, @RequestParam(value="user") String user) throws ParseException {
         List<Task> tasksList;
-        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null);
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null, task.getProjectID());
 
         System.out.println("-------------------------");
         System.out.println("UpdateTask");
@@ -102,7 +102,7 @@ public class TaskManagerResource {
     @PutMapping("/finishTask")
     public ResponseEntity<String> finishTask(@RequestBody Task task,@RequestParam(value="user") String user) throws ParseException {
         List<Task> tasksList;
-        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null);
+        tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null, task.getProjectID());
 
         if(tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()) {
             tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().get().setFinishedDate(LocalDate.now());

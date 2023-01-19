@@ -58,7 +58,7 @@ public class DBConnection {
     }
 
 
-    public List<Task> getTaskList(String username, String sortTyp){
+    public List<Task> getTaskList(String username, String sortTyp, Long projectId){
         TypedQuery<Task> taskTypedQuery;
         if(sortTyp == "deadline"){
             taskTypedQuery = em.createNamedQuery("Task.getAllTasks", Task.class);
@@ -69,6 +69,7 @@ public class DBConnection {
             taskTypedQuery = em.createNamedQuery("Task.SortedByTitle", Task.class);
         }
         taskTypedQuery.setParameter("username",username);
+        taskTypedQuery.setParameter("projectId", projectId);
         return taskTypedQuery.getResultList();
     }
 
@@ -224,6 +225,6 @@ public class DBConnection {
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         dbConnection.login("jartoc18", "geheim123");
-        dbConnection.getTaskList("jartoc18", "title");
+        dbConnection.getTaskList("jartoc18", "title", null);
     }
 }
