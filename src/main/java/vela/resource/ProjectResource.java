@@ -62,4 +62,14 @@ public class ProjectResource {
     public ResponseEntity getTasksOfProject(@RequestParam(value = "id") int projectId){
         return ResponseEntity.ok(dbConnection.getTasksOfProject(projectId));
     }
+
+    @DeleteMapping("/deleteProject")
+    public ResponseEntity deleteProject(@RequestParam(value = "id") int projectId){
+        try{
+            dbConnection.deleteProject(projectId);
+            return ResponseEntity.ok("project " + projectId + " deleted");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("project does not exist");
+        }
+    }
 }

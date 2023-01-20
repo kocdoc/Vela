@@ -13,7 +13,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Data
 @NamedQueries({
-        @NamedQuery(name = "Project.getAll", query = "SELECT p FROM project p")
+        @NamedQuery(name = "Project.getAll", query = "SELECT p FROM project p"),
+        @NamedQuery(name = "Project.delete", query = "DELETE FROM project p WHERE p.projectID = :projectID")
 })
 public class Project implements Serializable {
     @Id

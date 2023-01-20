@@ -222,6 +222,23 @@ public class DBConnection {
         return tasks;
     }
 
+    public void deleteProject(int projectId){
+//        em.createNamedQuery("Project.delete", Project.class).setParameter("projectID", projectId);
+        List<Project> projects = getAllProjects();
+        Project project = null;
+        for(Project p : projects){
+            if(p.getProjectID() == projectId){
+                project = p;
+            }
+        }
+        if(project == null){
+            throw new NoSuchElementException("project does not exist");
+        }
+        em.remove(project);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
+
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         dbConnection.login("jartoc18", "geheim123");
