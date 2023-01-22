@@ -6,6 +6,8 @@ import TaskManagerView from '@/views/TaskManagerView'
 import CalendarView from '@/views/CalendarView'
 import LoginView from '@/views/LoginView'
 import RegisterView from '@/views/RegisterView'
+import NewProjectView from '@/views/NewProjectView'
+import EditProjectView from '@/views/EditProjectView'
 
 const routes = [
   {
@@ -32,6 +34,16 @@ const routes = [
     path: '/projects',
     name: 'projects',
     component: ProjectView
+  },
+  {
+    path: '/newproject',
+    name: 'newproject',
+    component: NewProjectView
+  },
+  {
+    path: '/editproject',
+    name: 'editproject',
+    component: EditProjectView
   },
   {
     path: '/taskmanager',

@@ -2,15 +2,17 @@
 // import TaskManagerView from '@/views/TaskManagerView'
 import moment from 'moment/moment'
 export default {
+  props: ['editProject'],
   name: 'ProjectView',
   data () {
     return {
       hideCompleted: true,
       todos: [],
       sortType: 'title',
-      activeProject: 'Vela',
+      activeProject: '-',
       // userProjects: []
-      userProjects: ['Vela', 'POS', 'Mathe']
+      userProjects: ['Vela', 'POS', 'Mathe'],
+      userProjectDetails: []
     }
   },
   computed: {
@@ -25,32 +27,36 @@ export default {
       this.$router.push('login')
     }
 
-    fetch('/api/taskmanager/getTasks?username=' + localStorage.getItem('username'), {
+    fetch('/api/project/getProjects?user=' + localStorage.getItem('user_token'), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify('sortType: ' + this.sortType)
+      headers: { 'Content-Type': 'application/json' }
     })
-      .then((response) => { return response.json() })
-      .then(data => {
-        data.forEach(task => {
-          if (task.finishedDate != null) {
-            console.log(task)
-            task.done = true
-          }
-          this.todos.push(task)
-        })
+      .then(response => response.json())
+      .then(responseData => {
+        this.userProjectDetails = responseData
+        this.activeProject = responseData[0]
       })
   },
   methods: {
-    createNewProject () {
-      alert('New Project')
-      fetch('/api/project/addProject?username=' + localStorage.getItem('username'), {
+    getTasks () {
+      // console.log('Test' + this.activeProject)
+      fetch('/api/project/getTasks?id=' + this.activeProject.projectID, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: 'Projekt XY', description: 'gsfgfdjkgdf gjkdf gdfg kdf ' })
+        headers: { 'Content-Type': 'application/json' }
       })
-        .then(response => response.json())
-        .then(jsonData => console.log(jsonData))
+        .then((response) => { return response.json() })
+        .then(data => {
+          data.forEach(task => {
+            if (task.finishedDate != null) {
+              console.log(task)
+              task.done = true
+            }
+            this.todos.push(task)
+          })
+        })
+    },
+    createNewProject () {
+      this.$router.push('/newproject')
     },
     sortTodos (sortType) {
       this.sortType = sortType
@@ -101,9 +107,9 @@ export default {
       }
     },
     addTodo () {
-      const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, project: null, user: null }
+      const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, project: this.activeProject.projectID, user: null }
 
-      fetch('/api/taskmanager/addTask?username=' + localStorage.getItem('username'), {
+      fetch('/api/taskmanager/addTask?user=' + localStorage.getItem('user_token'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTask)
@@ -112,7 +118,7 @@ export default {
         .then(jsonData => this.todos.push(jsonData))
     },
     removeTodo (todo) {
-      fetch('/api/taskmanager/deleteTask?username=' + localStorage.getItem('username'), {
+      fetch('/api/taskmanager/deleteTask?user=' + localStorage.getItem('user_token'), {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo)
@@ -122,7 +128,7 @@ export default {
     },
     updateTask (todo) {
       console.log('Update:' + JSON.stringify(todo))
-      fetch('/api/taskmanager/updateTask?username=' + localStorage.getItem('username'), {
+      fetch('/api/taskmanager/updateTask?user=' + localStorage.getItem('user_token'), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo)
@@ -143,25 +149,21 @@ export default {
 </script>
 
 <style scoped>
-  /*.project-div {*/
-  /*margin-left: 270px;*/
-  /*margin-right: 30px;*/
-  /*margin-top: 30px;*/
-  /*!*text-align: center;*!*/
-  /*}*/
 </style>
 
 <template>
   <div class="project-div">
-    <p> {{activeProject}} </p>
+    <p> {{activeProject.name}} </p><br>
 
     <select>
-      <option v-for="project in userProjects" :key="project" @click="activeProject = project">{{project}}</option>
-      <option @click="createNewProject">Neues Projekt erstellen</option>
+      <option value=""  selected disabled hidden>Projekt auswählen</option>
+      <option v-for="project in userProjectDetails" :key="project" @click="activeProject = project; getTasks()">{{project.name}}</option>
+      <option @click="createNewProject">Neues Projekte erstellen</option>
     </select>
 
     <br>
-    <button>...</button>
+    <button @click="localStorage.setItem('active_project', this.activeProject); this.$router.push('editproject')">...</button>
+
     <br>
     <button>Tasks</button>
     <br>
@@ -176,7 +178,7 @@ export default {
             <th scope="col" class="p-4">
               <button @click="addTodo">+</button>
             </th>
-            <th scope="col" class="py-3 px-6 text-decoration: line-through" @click="sortTodos('title')">
+            <th scope="col" class="py-3 px-6" @click="sortTodos('title')">
               Titel
             </th>
             <th scope="col" class="py-3 px-6" @click="sortTodos('category')">
@@ -202,13 +204,13 @@ export default {
               </div>
             </td>
             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              <input v-model="todo.title" @keyup="updateTask(todo)">
+              <input v-model="todo.title" @keyup.enter="updateTask(todo)">
             </th>
             <td class="py-4 px-6">
-              <input v-model="todo.category" @keyup="updateTask(todo)">
+              <input v-model="todo.category" @keyup.enter="updateTask(todo)">
             </td>
             <td class="py-4 px-6">
-              <input type="date" v-model="todo.deadline" @change="updateTask(todo)">
+              <input type="date" v-model="todo.deadline" @keyup.enter="updateTask(todo)">
             </td>
             <td class="flex items-center py-4 px-6 space-x-3">
               <a href="#" @click="removeTodo(todo)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
