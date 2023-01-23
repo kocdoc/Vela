@@ -15,12 +15,12 @@ import java.time.LocalDate;
 @Data
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Task.getAllTasks", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID IS NULL"),
+        @NamedQuery(name = "Task.getAllTasks", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = NULL"),
         @NamedQuery(name = "Task.getTaskByID", query = "SELECT t FROM Task t WHERE t.taskID = :id"),
         @NamedQuery(name = "Task.getProjectTasks", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = :pId"),
-        @NamedQuery(name = "Task.SortedByCategory", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID IS NULL ORDER BY t.category"),
-        @NamedQuery(name = "Task.SortedByDeadline", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID IS NULL ORDER BY t.deadline"),
-        @NamedQuery(name = "Task.SortedByTitle", query = "SELECT t FROM Task t  WHERE t.user.username LIKE :username  AND t.project.projectID IS NULL ORDER BY t.title")
+        @NamedQuery(name = "Task.SortedByCategory", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = NULL ORDER BY t.category"),
+        @NamedQuery(name = "Task.SortedByDeadline", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = NULL ORDER BY t.deadline"),
+        @NamedQuery(name = "Task.SortedByTitle", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = NULL ORDER BY t.title")
 })
 public class Task implements Serializable {
     @Id

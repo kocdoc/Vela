@@ -72,6 +72,7 @@ public class DBConnection {
         else{
             taskTypedQuery = em.createNamedQuery("Task.SortedByTitle", Task.class);
         }
+
         taskTypedQuery.setParameter("username",username);
         return taskTypedQuery.getResultList();
     }
@@ -251,6 +252,6 @@ public class DBConnection {
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         //dbConnection.getTaskList("jartoc18", "title", null);
-        System.out.println(dbConnection.getTaskList("admin",null,123L));
+        System.out.println(dbConnection.getTaskList("admin",null,null));
     }
 }
