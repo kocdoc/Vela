@@ -107,7 +107,9 @@ export default {
       }
     },
     addTodo () {
-      const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, project: this.activeProject.projectID, user: null }
+      // alert(this.activeProject.projectID)
+      const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, projectID: this.activeProject.projectID, user: null }
+      console.log(newTask)
 
       fetch('/api/taskmanager/addTask?user=' + localStorage.getItem('user_token'), {
         method: 'POST',
@@ -164,10 +166,10 @@ export default {
     <br>
     <button @click="localStorage.setItem('active_project', this.activeProject); this.$router.push('editproject')">...</button>
 
-    <br>
-    <button>Tasks</button>
-    <br>
-    <button>Meetings</button>
+<!--    <br>-->
+<!--    <button>Tasks</button>-->
+<!--    <br>-->
+<!--    <button>Meetings</button>-->
 
     <!--  Task Table-->
 <!--    <div class="project-div">-->
@@ -210,7 +212,7 @@ export default {
               <input v-model="todo.category" @keyup.enter="updateTask(todo)">
             </td>
             <td class="py-4 px-6">
-              <input type="date" v-model="todo.deadline" @keyup.enter="updateTask(todo)">
+              <input type="date" v-model="todo.deadline" @change="updateTask(todo)">
             </td>
             <td class="flex items-center py-4 px-6 space-x-3">
               <a href="#" @click="removeTodo(todo)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>

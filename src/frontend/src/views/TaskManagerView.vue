@@ -41,6 +41,7 @@ export default {
   },
   methods: {
     sortTodos (sortType) {
+      alert(sortType)
       this.sortType = sortType
       switch (sortType) {
         case 'title':
@@ -172,7 +173,7 @@ export default {
               <input v-model="todo.category" @keyup.enter="updateTask(todo)">
             </td>
             <td class="py-4 px-6">
-              <input type="date" v-model="todo.deadline" @keyup.enter="updateTask(todo)">
+              <input type="date" v-model="todo.deadline" @change="updateTask(todo)">
             </td>
             <td class="flex items-center py-4 px-6 space-x-3">
               <a href="#" @click="removeTodo(todo)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
