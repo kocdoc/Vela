@@ -23,7 +23,7 @@ export default {
       this.$router.push('login')
     }
 
-    fetch('/api/taskmanager/getTasks?username=' + localStorage.getItem('username'), {
+    fetch('/api/taskmanager/getTasks?user=' + localStorage.getItem('user_token'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify('sortType: ' + this.sortType)
@@ -41,6 +41,7 @@ export default {
   },
   methods: {
     sortTodos (sortType) {
+      alert(sortType)
       this.sortType = sortType
       switch (sortType) {
         case 'title':
@@ -88,10 +89,10 @@ export default {
           break
       }
     },
-    addTodo () {
+    addTask () {
       const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, project: null, user: null }
 
-      fetch('/api/taskmanager/addTask?username=' + localStorage.getItem('username'), {
+      fetch('/api/taskmanager/addTask?user=' + localStorage.getItem('user_token'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTask)
@@ -100,7 +101,7 @@ export default {
         .then(jsonData => this.todos.push(jsonData))
     },
     removeTodo (todo) {
-      fetch('/api/taskmanager/deleteTask?username=' + localStorage.getItem('username'), {
+      fetch('/api/taskmanager/deleteTask?user=' + localStorage.getItem('user_token'), {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo)
@@ -110,7 +111,7 @@ export default {
     },
     updateTask (todo) {
       console.log('Update:' + JSON.stringify(todo))
-      fetch('/api/taskmanager/updateTask?username=' + localStorage.getItem('username'), {
+      fetch('/api/taskmanager/updateTask?user=' + localStorage.getItem('user_token'), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(todo)
@@ -138,9 +139,9 @@ export default {
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="p-4">
-            <button @click="addTodo">+</button>
+            <button @click="addTask">+</button>
           </th>
-          <th scope="col" class="py-3 px-6 text-decoration: line-through" @click="sortTodos('title')">
+          <th scope="col" class="py-3 px-6" @click="sortTodos('title')">
             Titel
           </th>
           <th scope="col" class="py-3 px-6" @click="sortTodos('category')">
@@ -166,10 +167,10 @@ export default {
               </div>
             </td>
             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              <input v-model="todo.title" @keyup="updateTask(todo)">
+              <input v-model="todo.title" @keyup.enter="updateTask(todo)">
             </th>
             <td class="py-4 px-6">
-              <input v-model="todo.category" @keyup="updateTask(todo)">
+              <input v-model="todo.category" @keyup.enter="updateTask(todo)">
             </td>
             <td class="py-4 px-6">
               <input type="date" v-model="todo.deadline" @change="updateTask(todo)">

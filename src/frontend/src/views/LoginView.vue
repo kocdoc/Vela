@@ -27,7 +27,7 @@ export default {
         })
         .then(jsonData => {
           // console.log('Data' + jsonData)
-          // console.log('Token ' + jsonData.token)
+          console.log('Token ' + jsonData.username)
           localStorage.setItem('user_token', jsonData.token)
           localStorage.setItem('username', jsonData.username)
           this.$router.push('taskmanager')
