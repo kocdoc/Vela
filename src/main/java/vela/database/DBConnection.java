@@ -48,7 +48,7 @@ public class DBConnection {
         taskList.add(new Task(null, LocalDate.now(), null, "Description1", "Title1", null, null,null));
         taskList.add(new Task(null, LocalDate.now(), null, "Description2", "Title2", null, null,null));
         taskList.add(new Task(null, LocalDate.now(), null, "Description3", "Title3", null, null,null));
-        User user = new User("admin", "admin", "admin", "admin@gmail.com", "admin", null, null, null, null, null);
+        User user = new User("admin", "admin", "admin", "admin@gmail.com", "admin", null, null, new ArrayList<Project>(), null, null);
         user.setTaskList(taskList);
         taskList.forEach(task -> task.setUser(user));
 //        taskList.forEach(task -> em.persist(task));
@@ -60,7 +60,11 @@ public class DBConnection {
 
     public List<Task> getTaskList(String username, String sortTyp, Long projectId){
         TypedQuery<Task> taskTypedQuery;
-        if(sortTyp == "deadline"){
+        if(projectId != null){
+          taskTypedQuery = em.createNamedQuery("Task.getProjectTasks", Task.class);
+          taskTypedQuery.setParameter("pId", projectId);
+        }
+          else if(sortTyp == "deadline"){
             taskTypedQuery = em.createNamedQuery("Task.getAllTasks", Task.class);
         } else if (sortTyp == "category") {
             taskTypedQuery = em.createNamedQuery("Task.SortedByCategory", Task.class);
@@ -69,7 +73,6 @@ public class DBConnection {
             taskTypedQuery = em.createNamedQuery("Task.SortedByTitle", Task.class);
         }
         taskTypedQuery.setParameter("username",username);
-        taskTypedQuery.setParameter("projectId", projectId);
         return taskTypedQuery.getResultList();
     }
 
@@ -241,7 +244,7 @@ public class DBConnection {
 
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
-        dbConnection.login("jartoc18", "geheim123");
-        dbConnection.getTaskList("jartoc18", "title", null);
+        //dbConnection.getTaskList("jartoc18", "title", null);
+        System.out.println(dbConnection.getTaskList("admin",null,123L));
     }
 }
