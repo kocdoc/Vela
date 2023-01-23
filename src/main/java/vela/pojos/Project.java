@@ -3,6 +3,7 @@ package vela.pojos;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Data
 @NamedQueries({
         @NamedQuery(name = "Project.getAll", query = "SELECT p FROM project p"),
+        @NamedQuery(name = "Project.getProjectById", query = "SELECT p FROM project p WHERE p.projectID = :projectID"),
         @NamedQuery(name = "Project.delete", query = "DELETE FROM project p WHERE p.projectID = :projectID")
 })
 public class Project implements Serializable {

@@ -161,6 +161,12 @@ public class DBConnection {
         }
     }
 
+    public Project getProject(Integer projectId){
+        TypedQuery<Project> projectTypedQuery = em.createNamedQuery("Project.getProjectById", Project.class);
+        projectTypedQuery.setParameter("projectID", projectId);
+        return projectTypedQuery.getSingleResult();
+    }
+
     public List<User> getAllUsers(){
         List<User> users = em.createNamedQuery("user.getAllUsers", User.class).getResultList();
         return users;

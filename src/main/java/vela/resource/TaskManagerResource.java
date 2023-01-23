@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vela.database.DBConnection;
 import vela.jwt.JWTNeededFilter;
+import vela.pojos.Project;
 import vela.pojos.Task;
 
 import java.text.ParseException;
@@ -57,6 +58,14 @@ public class TaskManagerResource {
         System.out.println(tasksList);
 
         if (!tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()) {
+
+            if(task.getProjectID() != null){
+                Project project = instance.getProject(Math.toIntExact(task.getProjectID()));
+                task.setProject(project);
+                instance.addTaskToDatabase(task,JWTNeededFilter.getUsername(user));
+                return ResponseEntity.status(HttpStatus.CREATED).body(task);
+            }
+
             tasksList.add(task);
             instance.addTaskToDatabase(task,JWTNeededFilter.getUsername(user));
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
