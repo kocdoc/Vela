@@ -2,33 +2,42 @@
   <div class="next-to-sidebar">
 
     <form @submit.prevent="register">
-      <h1>Registrierung:</h1>
+      <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-[#052A34] md:text-5xl lg:text-6xl dark:text-white">Registrierung</h1>
       <br>
-      <label>Vorname:</label>
-      <input type="text" v-model="firstname" required>
+      <div class="relative rounded-md">
+        <label class="block font-medium text-gray-700 leading-5">Vorname</label>
+        <input v-model="firstname" required name="login-username" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+      </div>
       <br>
-      <label>Nachname:</label>
-      <input type="text" v-model="lastname" required>
+      <div class="relative rounded-md">
+        <label class="block font-medium text-gray-700 leading-5">Nachname</label>
+        <input v-model="lastname" required name="login-username" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+      </div>
       <br>
-      <label>Geburtsdatum:</label>
-      <input type="date" v-model="date_of_birth" required>
+      <div class="relative rounded-md">
+        <label class="block font-medium text-gray-700 leading-5">Geburtsdatum</label>
+        <input v-model="date_of_birth" required name="login-username" type="date" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+      </div>
       <br>
-      <label>E-Mail:</label>
-      <input type="email" v-model="email" required>
+      <div class="relative rounded-md">
+        <label class="block font-medium text-gray-700 leading-5">E-Mail</label>
+        <input v-model="email" type="email" required name="login-username" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+      </div>
       <br>
-      <label>Benutzername:</label>
-      <input type="text" v-model="username" required>
+      <div class="relative rounded-md">
+        <label class="block font-medium text-gray-700 leading-5">Benutzername</label>
+        <input v-model="username" required name="login-username" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+      </div>
       <br>
-      <label>Passwort:</label>
-      <input type="password" @keyup="validatePassword" v-model="password" required>
+      <label class="block font-medium text-gray-700 leading-5">Passwort</label>
+      <input type="password" required @keyup="validatePassword" v-model="password" name="login-username" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
       <div v-if="passwordError">
         {{passwordError}}
       </div>
       <br>
-      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Registrieren</button>
+      <button type="submit" class="w-64 font-bold text-white bg-[#052A34] hover:bg-[#041D24] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Registrieren</button>
       <br>
-      <br>
-      Ich besitze schon einen Account. <router-link :to="{ name: 'login' }">Login</router-link>
+      <router-link :to="{ name: 'login' }" class="text-gray-400 hover:text-[#052A34] hover: bold">Ich besitze schon einen Account</router-link>
     </form>
 
   </div>

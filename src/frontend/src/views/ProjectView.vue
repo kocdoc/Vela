@@ -62,10 +62,12 @@ export default {
       this.sortType = sortType
       switch (sortType) {
         case 'title':
-          console.log('Hier bin ich')
           this.todos.sort((a, b) => {
             const t1 = a.title.toLowerCase()
             const t2 = b.title.toLowerCase()
+            if (t1 === '') {
+              return 1
+            }
             if (t1 < t2) {
               return -1
             }
@@ -80,6 +82,12 @@ export default {
           this.todos.sort((a, b) => {
             const c1 = a.category.toLowerCase()
             const c2 = b.category.toLowerCase()
+            if (c1 === '') {
+              return 1
+            }
+            if (c2 === '') {
+              return -1
+            }
             if (c1 < c2) {
               return -1
             }
@@ -94,6 +102,12 @@ export default {
           this.todos.sort((a, b) => {
             const d1 = a.deadline
             const d2 = b.deadline
+            if (d1 === null) {
+              return 1
+            }
+            if (d2 === null) {
+              return -1
+            }
             if (d1 < d2) {
               return -1
             }
@@ -102,7 +116,6 @@ export default {
             }
             return 0
           })
-          console.log(this.todos)
           break
       }
     },
@@ -159,43 +172,52 @@ export default {
 </script>
 
 <style scoped>
+.options-button{
+  margin-right: -8px;
+  float:right;
+}
 </style>
 
 <template>
   <div class="project-div">
-    <p> {{display}} </p><br>
+    <div style="margin-right: 40px">
+      <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-[#052A34] md:text-5xl lg:text-6xl dark:text-white">{{display}} </h1>
 
-    <select>
+    </div>
+
+    <select class="w-64 font-bold text-white bg-[#052A34] hover:bg-[#041D24] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">
       <option value=""  selected disabled hidden>Projekt auswählen</option>
       <option v-for="project in userProjectDetails" :key="project" @click="activeProject = project; display = project.name; getTasks()">{{project.name}}</option>
-      <option @click="createNewProject">Neues Projekte erstellen</option>
+      <option @click="createNewProject">Neues Projekt erstellen</option>
     </select>
 
-    <br>
-    <button @click="onEditProject">...</button>
+    <div class="options-button">
+<!--    <button @click="onEditProject">...</button>-->
 
-<!--    <br>-->
-<!--    <button>Tasks</button>-->
-<!--    <br>-->
-<!--    <button>Meetings</button>-->
+      <button @click="onEditProject" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M120 256c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm160 0c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm104 56c-30.9 0-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56s-25.1 56-56 56z" clip-rule="evenodd"></path></svg>
+      </button>
+    </div>
 
-    <!--  Task Table-->
-<!--    <div class="project-div">-->
       <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <thead class="text-xs text-[#FFFCF7] uppercase bg-[#052A34] dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="p-4">
-              <button @click="addTodo">+</button>
+              <button @click="addTodo">
+                <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="20%" class="w-4 h-4 text-[#FFFCF7] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor">
+                  <path fill="currentColor" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+                </svg>
+              </button>
             </th>
             <th scope="col" class="py-3 px-6" @click="sortTodos('title')">
-              Titel
+              <span style="font-size: 20px; font-weight: lighter" >TITEL</span>
             </th>
             <th scope="col" class="py-3 px-6" @click="sortTodos('category')">
-              Kategorie
+              <span style="font-size: 20px; font-weight: lighter" >KATEGORIE</span>
             </th>
             <th scope="col" class="py-3 px-6" @click="sortTodos('deadline')">
-              Deadline
+              <span style="font-size: 20px; font-weight: lighter" >DEADLINE</span>
             </th>
             <th scope="col" class="py-3 px-6">
 
@@ -214,17 +236,23 @@ export default {
               </div>
             </td>
             <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              <input v-model="todo.title" @keyup.enter="updateTask(todo)">
+              <input v-model="todo.title" @keyup.enter="updateTask(todo)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Titel">
             </th>
             <td class="py-4 px-6">
-              <input v-model="todo.category" @keyup.enter="updateTask(todo)">
+              <input v-model="todo.category" @keyup.enter="updateTask(todo)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Kategorie">
             </td>
             <td class="py-4 px-6">
-              <input type="date" v-model="todo.deadline" @change="updateTask(todo)">
+              <div class="relative">
+                <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                  <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                </div>
+                <input v-model="todo.deadline" @change="updateTask(todo)" datepicker datepicker-format="mm/dd/yyyy" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+              </div>
             </td>
             <td class="flex items-center py-4 px-6 space-x-3">
-              <a href="#" @click="removeTodo(todo)" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
-            </td>
+              <button @click="removeTodo(todo)" type="button" class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" clip-rule="evenodd"></path></svg>
+              </button></td>
           </tr>
           </tbody>
         </table>

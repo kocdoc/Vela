@@ -54,7 +54,7 @@ public class TaskManagerResource {
         List<Task> tasksList;
         tasksList = instance.getTaskList(JWTNeededFilter.getUsername(user), null, task.getProjectID());
 
-        log.info(task.toString());
+        log.info("New Task:" + task.toString());
         System.out.println(tasksList);
 
         if (!tasksList.stream().filter(task1 -> task1.getTaskID().equals(task.getTaskID())).findFirst().isPresent()) {
@@ -122,6 +122,8 @@ public class TaskManagerResource {
 
     public static void main(String[] args) {
         TaskManagerResource test = new TaskManagerResource();
+        test.getTasks("eyJhbGciOiJIUzI1NiJ9.YWRtaW4.LlC3S6CxWi51UVGvBR6fo-DoUORjWKMvKOCj0pM2XC4", "sortType: title");
+
     }
 
 
