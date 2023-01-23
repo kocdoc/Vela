@@ -10,6 +10,7 @@ export default {
       todos: [],
       sortType: 'title',
       activeProject: '-',
+      display: '-',
       // userProjects: []
       userProjects: ['Vela', 'POS', 'Mathe'],
       userProjectDetails: []
@@ -39,7 +40,6 @@ export default {
   },
   methods: {
     getTasks () {
-      // console.log('Test' + this.activeProject)
       fetch('/api/project/getTasks?id=' + this.activeProject.projectID, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
@@ -145,6 +145,14 @@ export default {
         todo.done = false
       }
       this.updateTask(todo)
+    },
+    onEditProject () {
+      alert('edit Project')
+      console.log(this.activeProject.name)
+      localStorage.setItem('project_name', this.activeProject.name)
+      localStorage.setItem('project_description', this.activeProject.description)
+      // localStorage.setItem('project_id', this.activeProject.projectID)
+      this.$router.push('editproject')
     }
   }
 }
@@ -155,16 +163,16 @@ export default {
 
 <template>
   <div class="project-div">
-    <p> {{activeProject.name}} </p><br>
+    <p> {{display}} </p><br>
 
     <select>
       <option value=""  selected disabled hidden>Projekt auswählen</option>
-      <option v-for="project in userProjectDetails" :key="project" @click="activeProject = project; getTasks()">{{project.name}}</option>
+      <option v-for="project in userProjectDetails" :key="project" @click="activeProject = project; display = project.name; getTasks()">{{project.name}}</option>
       <option @click="createNewProject">Neues Projekte erstellen</option>
     </select>
 
     <br>
-    <button @click="localStorage.setItem('active_project', this.activeProject); this.$router.push('editproject')">...</button>
+    <button @click="onEditProject">...</button>
 
 <!--    <br>-->
 <!--    <button>Tasks</button>-->

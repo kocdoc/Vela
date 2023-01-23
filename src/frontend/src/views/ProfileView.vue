@@ -13,7 +13,6 @@ export default {
       this.$router.push('login')
     },
     editProject () {
-      alert('Test')
       fetch('/api/profile/editUserData', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
