@@ -2,6 +2,7 @@ package vela.database;
 
 import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
+import vela.pojos.Event;
 import vela.pojos.Project;
 import vela.pojos.Task;
 import vela.pojos.User;
@@ -247,6 +248,33 @@ public class DBConnection {
         em.remove(project);
         em.getTransaction().begin();
         em.getTransaction().commit();
+    }
+
+    public Event addEventToDB(Event event){
+        em.persist(event);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+
+        return event;
+    }
+
+    public void deleteEventFromDB(int eventId){
+        try{
+            Event event = em.find(Event.class, eventId);
+            em.remove(event);
+            em.getTransaction().begin();
+            em.getTransaction().commit();
+        } catch (Exception e){
+            throw new NoSuchElementException("event does not exist");
+        }
+    }
+
+    public Event updateEventOnDB(Event event){
+        em.merge(event);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+
+        return event;
     }
 
     public static void main(String[] args) {

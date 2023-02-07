@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -19,11 +21,14 @@ public class Event implements Serializable{
     @Column(name = "event_id")
     private Integer eventId;
 
+    @Column(name = "date_of_event")
+    private LocalDate date;
+
     @Column(name = "begin_of_event")
-    private LocalDateTime begin;
+    private LocalTime begin;
 
     @Column(name = "end_of_event")
-    private LocalDateTime end;
+    private LocalTime end;
 
     private String description;
     private String name;
