@@ -1,5 +1,6 @@
 package vela.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,5 +37,6 @@ public class Event implements Serializable{
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "username")
+    @JsonIgnore
     private User user;
 }
