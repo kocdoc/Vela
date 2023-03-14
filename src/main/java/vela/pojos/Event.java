@@ -16,6 +16,9 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Event.getEventsByUser", query = "SELECT e FROM Event e WHERE e.user.username = :username")
+})
 public class Event implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

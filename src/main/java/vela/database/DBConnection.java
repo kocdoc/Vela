@@ -277,6 +277,10 @@ public class DBConnection {
         return event;
     }
 
+    public List<Event> getEventsByUser(String username){
+        return em.createNamedQuery("Event.getEventsByUser").setParameter("username", username).getResultList();
+    }
+
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         //dbConnection.getTaskList("jartoc18", "title", null);

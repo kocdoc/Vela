@@ -43,4 +43,14 @@ public class CalendarResource {
     public ResponseEntity updateEvent(@RequestBody Event event){
         return ResponseEntity.ok().body(dbConnection.updateEventOnDB(event));
     }
+
+    @GetMapping
+    public ResponseEntity getEventsByUser(@RequestParam("user") String jwt){
+        try {
+            String username = JWTNeededFilter.getUsername(jwt);
+            return ResponseEntity.ok().body(dbConnection.getEventsByUser(username));
+        } catch (ParseException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("jwt not valid");
+        }
+    }
 }
