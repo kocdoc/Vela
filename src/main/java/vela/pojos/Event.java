@@ -9,7 +9,6 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
@@ -35,7 +34,7 @@ public class Event implements Serializable{
     private LocalTime end;
 
     private String description;
-    private String name;
+    private String title;
 
     @ToString.Exclude
     @ManyToOne(cascade = CascadeType.PERSIST)
