@@ -49,10 +49,19 @@ public class DBConnection {
         taskList.add(new Task(null, LocalDate.now(), null, "Description1", "Title1", null, null,null));
         taskList.add(new Task(null, LocalDate.now(), null, "Description2", "Title2", null, null,null));
         taskList.add(new Task(null, LocalDate.now(), null, "Description3", "Title3", null, null,null));
-        User user = new User("admin", "admin", "admin", "admin@gmail.com", "admin", null, null, new ArrayList<Project>(), null, null);
-        user.setTaskList(taskList);
-        taskList.forEach(task -> task.setUser(user));
+        User user = new User("admin", "admin", "admin", "admin@gmail.com", "admin", new ArrayList<User>(), new ArrayList<User>(), new ArrayList<Project>(), null, null);
+        User user1 = new User("admin1", "admin1", "admin1", "admin1@gmail.com", "admin", new ArrayList<User>(), new ArrayList<User>(), new ArrayList<Project>(), null, null);
+        User user2 = new User("admin2", "admin2", "admin2", "admin2@gmail.com", "admin", new ArrayList<User>(), new ArrayList<User>(), new ArrayList<Project>(), null, null);
+        User user3 = new User("admin3", "admin3", "admin3", "admin3@gmail.com", "admin", new ArrayList<User>(), new ArrayList<User>(), new ArrayList<Project>(), null, null);
+
+        user1.setTaskList(taskList);
+        taskList.forEach(task -> task.setUser(user1));
 //        taskList.forEach(task -> em.persist(task));
+        user1.getRequestList().add(user2);
+        user1.getRequestList().add(user3);
+        em.persist(user1);
+        em.persist(user2);
+        em.persist(user3);
         em.persist(user);
         em.getTransaction().begin();
         em.getTransaction().commit();
@@ -311,9 +320,24 @@ public class DBConnection {
         throw new NoSuchElementException("user does not exist");
     }
 
+    public void saveFriendRequests(User user){
+        em.merge(user);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
+
+    public void addFriendToDatabase(User mainUser){
+        em.merge(mainUser);
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
+
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
+        dbConnection.addUserWithTasks();
         //dbConnection.getTaskList("jartoc18", "title", null);
-        System.out.println(dbConnection.getTaskList("admin",null,null));
+        System.out.println(dbConnection.getTaskList("admin1",null,null));
+        System.out.println(dbConnection.getTaskList("admin2",null,null));
+
     }
 }
