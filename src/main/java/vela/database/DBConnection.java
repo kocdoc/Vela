@@ -291,6 +291,26 @@ public class DBConnection {
         return em.createNamedQuery("Event.getEventsByUser").setParameter("username", username).getResultList();
     }
 
+    public Project addUserToProject(int projectId, String username){
+        if(username != null){
+           Project project = em.find(Project.class, projectId);
+           if(project == null){
+               throw new NoSuchElementException("project does not exist");
+           }
+           User user = em.find(User.class, username);
+           if(user == null){
+               throw new NoSuchElementException("user does not exist");
+           }
+           project.addUser(user);
+           user.addProject(project);
+           em.merge(user);
+           em.getTransaction().begin();
+           em.getTransaction().commit();
+           return project;
+        }
+        throw new NoSuchElementException("user does not exist");
+    }
+
     public static void main(String[] args) {
         DBConnection dbConnection = DBConnection.getInstance();
         //dbConnection.getTaskList("jartoc18", "title", null);
