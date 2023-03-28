@@ -90,6 +90,7 @@ public class DBConnection {
         user.getTaskList().add(task);
         user.getTaskList().forEach(task1 -> task1.setUser(user));
         user.getTaskList().forEach(task1 -> System.out.println(task1.getUser()));
+        System.out.println("sdgdfgf dg dfg "+task);
         em.persist(user);
         em.getTransaction().begin();
         em.getTransaction().commit();

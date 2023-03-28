@@ -160,7 +160,7 @@ export default {
       this.updateTask(todo)
     },
     onEditProject () {
-      alert('edit Project')
+      // alert('edit Project')
       console.log(this.activeProject.name)
       localStorage.setItem('project_name', this.activeProject.name)
       localStorage.setItem('project_description', this.activeProject.description)

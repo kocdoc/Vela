@@ -8,9 +8,7 @@
       <a href="#">Contact</a>
     </div>
 
-   <!-- <div id="main"> -->
-      <button class="openbtn" @click="openNav">&#9776; Open Sidebar</button>
-   <!-- </div> -->
+    <button class="openbtn" @click="openNav">&#9776; Open Sidebar</button>
   </div>
 </template>
 
@@ -25,12 +23,9 @@ export default {
   methods: {
     openNav () {
       document.getElementById('mySidebar').style.width = '250px'
-      document.getElementById('main').style.marginRight = '250px'
-      console.log('Hilfe')
     },
     closeNav () {
       document.getElementById('mySidebar').style.width = '0'
-      document.getElementById('main').style.marginRight = '0'
     }
   }
 }
@@ -94,12 +89,6 @@ export default {
 
 .openbtn:hover {
   background-color: #444;
-}
-
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-#main {
-  transition: margin-left .5s; /* If you want a transition effect */
-  padding: 20px;
 }
 
 </style>

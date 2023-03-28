@@ -22,7 +22,7 @@ export default {
                   <path fill="currentColor" d="M192 0c-41.8 0-77.4 26.7-90.5 64H48C21.5 64 0 85.5 0 112V464c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H282.5C269.4 26.7 233.8 0 192 0zm0 128c-17.7 0-32-14.3-32-32s14.3-32 32-32s32 14.3 32 32s-14.3 32-32 32zm-80 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/>
                 </svg>
               </div>
-              <span style="font-weight: bold" class="ml-3 w-32 h-6 text-[#FFFCF7] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" >Task Manager</span>
+              <span style="font-weight: bold" class="ml-3 w-32 h-6 text-[#FFFCF7] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor">Task Manager</span>
             </router-link>
           </li>
 
@@ -35,7 +35,7 @@ export default {
             </router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'calendar' }" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-none dark:text-white hover:bg-[#24C4C4]/80 dark:hover:bg-gray-700 group">
+            <router-link :to="{ name: 'calendarTest' }" class="flex items-center p-2 text-base font-normal text-gray-900 rounded-none dark:text-white hover:bg-[#24C4C4]/80 dark:hover:bg-gray-700 group">
             <div class="w-12 h-6">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="ml-1 w-12 h-6 place-self-center text-[#FFFCF7] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor">
                   <path fill="currentColor" d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z"/>

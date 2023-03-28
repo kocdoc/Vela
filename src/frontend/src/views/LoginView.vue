@@ -46,8 +46,7 @@ export default {
 
 <template>
   <div class="next-to-sidebar">
-    <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-[#052A34] md:text-5xl lg:text-6xl dark:text-white">Login</h1>
-    <br>
+    <h1 style="margin-top: -20px; margin-bottom: 30px" class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-[#052A34] md:text-5xl lg:text-6xl dark:text-white">Login</h1>
     <div class="relative rounded-md">
       <label class="block font-medium text-gray-700 leading-5">Benutzername</label>
       <input v-model="username" name="login-username" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">

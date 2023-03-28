@@ -8,6 +8,7 @@ import LoginView from '@/views/LoginView'
 import RegisterView from '@/views/RegisterView'
 import NewProjectView from '@/views/NewProjectView'
 import EditProjectView from '@/views/EditProjectView'
+import CalendarTest from '@/views/CalendarTest'
 
 const routes = [
   {
@@ -59,6 +60,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: RegisterView
+  },
+  {
+    path: '/calendarTest',
+    name: 'calendarTest',
+    component: CalendarTest
   }
 ]
 

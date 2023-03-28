@@ -20,7 +20,7 @@ export default {
       })
         .then(response => {
           if (response.status === 200) {
-            alert('Profil wurde aktualisiert.')
+            console.log('Aktualisiert')
           } else {
             alert('Ein Fehler ist aufgetreten. Bitte versuche es erneut')
           }
