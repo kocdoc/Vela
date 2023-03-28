@@ -28,7 +28,7 @@ public class TestConsole {
 
     public static void main(String[] args) throws JOSEException, ParseException {
         LoginResource loginResource = new LoginResource();
-        String jwt = loginResource.createJWT(new User("admin", "admin", "admin", "admin@gmail.com", "admin", null, null, null, null, null));
+        String jwt = loginResource.createJWT(new User("admin2", "admin", "admin", "admin@gmail.com", "admin", null, null, null, null, null));
         System.out.println(jwt);
         jwt = jwt.replace("Bearer", "");
         JWSObject jwsObject = JWSObject.parse(jwt);

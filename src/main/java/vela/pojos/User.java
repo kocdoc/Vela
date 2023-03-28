@@ -1,5 +1,6 @@
 package vela.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,6 +47,7 @@ public class User implements Serializable {
     private List<User> requestList;
 
     @ToString.Exclude
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "user_project", joinColumns = {
             @JoinColumn(name = "username")
@@ -62,7 +64,7 @@ public class User implements Serializable {
     @ToString.Exclude
     private List<Event> eventList;
 
-    private void addProject(Project project){
+    public void addProject(Project project){
         if(!projectList.contains(project)){
             projectList.add(project);
         }

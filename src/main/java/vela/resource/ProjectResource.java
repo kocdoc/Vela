@@ -72,4 +72,13 @@ public class ProjectResource {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("project does not exist");
         }
     }
+
+    @PatchMapping
+    public ResponseEntity addUserToProject(@RequestParam(value = "id") int projectId, @RequestParam(value = "username") String username){
+        try{
+            return ResponseEntity.ok(dbConnection.addUserToProject(projectId, username));
+        } catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

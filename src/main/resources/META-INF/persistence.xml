@@ -9,6 +9,7 @@
         <class>vela.pojos.Task</class>
         <class>vela.pojos.Meeting</class>
         <class>vela.pojos.User</class>
+        <class>vela.pojos.FriendRequest</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/veladb"/>

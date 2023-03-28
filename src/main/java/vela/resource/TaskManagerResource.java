@@ -120,7 +120,7 @@ public class TaskManagerResource {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Task not found");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         TaskManagerResource test = new TaskManagerResource();
 //        test.getTasks("eyJhbGciOiJIUzI1NiJ9.YWRtaW4.LlC3S6CxWi51UVGvBR6fo-DoUORjWKMvKOCj0pM2XC4", "sortType: title");
     }
