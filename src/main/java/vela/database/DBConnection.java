@@ -270,11 +270,21 @@ public class DBConnection {
     }
 
     public Event updateEventOnDB(Event event){
-        em.merge(event);
+        Event dbEvent = em.find(Event.class, event.getEventId());
+        if(event.getDate() != null){
+            dbEvent.setDate(event.getDate());
+        }
+        if(event.getDescription() != null){
+            dbEvent.setDescription(event.getDescription());
+        }
+        if(event.getTitle() != null){
+            dbEvent.setTitle(event.getTitle());
+        }
+        em.merge(dbEvent);
         em.getTransaction().begin();
         em.getTransaction().commit();
 
-        return event;
+        return dbEvent;
     }
 
     public List<Event> getEventsByUser(String username){
