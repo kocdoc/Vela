@@ -64,7 +64,7 @@ public class FriendRequestResource {
     }
 
     // accept or decline
-    @GetMapping("/proceedUser")
+    @PostMapping("/proceedUser")
     public HttpStatus proceedUser(@RequestBody String user, @RequestParam String userToAccept, @RequestParam Boolean requestAnswer) throws ParseException {
         String token[] = user.split("\"");
         User mainUser = instance.getUserByUsername(JWTNeededFilter.getUsername(token[3]));
@@ -75,6 +75,7 @@ public class FriendRequestResource {
             if(!requestAnswer){
                 mainUser.getRequestList().removeIf(user1 -> user1.equals(addedUser));
                 instance.saveFriendRequests(mainUser);
+                instance.saveFriendRequests(addedUser);
             }
             return HttpStatus.CONFLICT;
         }

@@ -11,6 +11,7 @@ import vela.database.DBConnection;
 import vela.pojos.User;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
+import java.util.ArrayList;
 
 @RestController
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,6 +26,11 @@ public class RegisterResource {
     public ResponseEntity register(@RequestBody User user){
         try{
             log.info(user.toString());
+            user.setEventList(new ArrayList<>());
+            user.setFriendList(new ArrayList<>());
+            user.setProjectList(new ArrayList<>());
+            user.setRequestList(new ArrayList<>());
+            user.setTaskList(new ArrayList<>());
             dbConnection.addUser(user);
             log.info("user registered");
             return ResponseEntity.ok().body("registered");

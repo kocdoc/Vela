@@ -1,11 +1,14 @@
 <script>
 // import TaskManagerView from '@/views/TaskManagerView'
 import moment from 'moment/moment'
+import AddFriendToProjectComponent from '@/components/AddFriendToProjectComponent'
 export default {
+  components: { AddFriendToProjectComponent },
   props: ['editProject'],
   name: 'ProjectView',
   data () {
     return {
+      friendList: [],
       hideCompleted: true,
       todos: [],
       sortType: 'title',
@@ -122,7 +125,6 @@ export default {
     addTodo () {
       // alert(this.activeProject.projectID)
       const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, projectID: this.activeProject.projectID, user: null }
-      console.log(newTask)
 
       fetch('/api/taskmanager/addTask?user=' + localStorage.getItem('user_token'), {
         method: 'POST',
@@ -166,6 +168,41 @@ export default {
       localStorage.setItem('project_description', this.activeProject.description)
       // localStorage.setItem('project_id', this.activeProject.projectID)
       this.$router.push('editproject')
+    },
+    openNav () {
+      // todo fetch friends
+      this.friendList = []
+      fetch('/api/friendrequest/getAllFriends?username=' + localStorage.getItem('user_token'), {})
+        .then(response => response.json())
+        .then(jsonData => {
+          jsonData.forEach(friend => {
+            this.friendList.push(friend.username)
+          })
+        })
+      document.getElementById('mySidebar').style.width = '400px'
+      // document.getElementById('main').style.marginRight = '300px'
+    },
+    closeNav () {
+      document.getElementById('mySidebar').style.width = '0'
+      // document.getElementById('main').style.marginRight = '0'
+    },
+    saveProject () {
+      fetch('/api/project/editProject', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectID: this.activeProject.projectID,
+          description: this.activeProject.description,
+          name: this.activeProject.name
+        })
+      })
+        .then(response => {
+          if (response.status === 200) {
+            alert('Projekt aktualisiert')
+          } else {
+            alert('Aktualiserung fehlgeschlagen. Bitte versuche es erneut.')
+          }
+        })
     }
   }
 }
@@ -176,9 +213,60 @@ export default {
   margin-right: -8px;
   float:right;
 }
+
+/* The sidebar menu */
+.sidebar {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0;
+  right: 0;
+  background-color: #052A34; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+}
+/* The sidebar links */
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #f1f1f1;
+  display:inline-block;
+  transition: 0.3s;
+}
 </style>
 
 <template>
+
+  <!-- Sidebar -->
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
+    <p>Projekt ändern:</p>
+
+    <!--    {{activeProject.projectID}}-->
+    <div class="relative rounded-md" style="margin-bottom: 15px">
+      <label class="block font-medium text-gray-700 leading-5">Projektname</label>
+      <input v-model="activeProject.name" required name="login-username" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+    </div>
+
+    <div class="relative rounded-md" style="margin-bottom: 15px">
+      <label class="block font-medium text-gray-700 leading-5">Beschreibung</label>
+      <input v-model="activeProject.description" required name="login-username" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+    </div>
+    <!--    Projektname: <input v-model="project_name" type="text"><br>-->
+    <!--    Beschreibung: <input v-model="project_description" type="text">-->
+    <br>
+    <button @click="saveProject" type="button" class="w-64 font-bold text-white bg-[#052A34] hover:bg-[#041D24] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Änderungen speichern</button>
+
+    <p>Freund zum Projekt hinzufügen:</p>
+
+    <AddFriendToProjectComponent v-for="friend in friendList" :key="friend" :name="friend" :project-i-d="activeProject.projectID"></AddFriendToProjectComponent>
+
+  </div>
+  <!-- Sidebar-Ende -->
+
   <div class="project-div">
     <div style="margin-right: 40px">
       <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-[#052A34] md:text-5xl lg:text-6xl dark:text-white">{{display}} </h1>
@@ -193,8 +281,9 @@ export default {
 
     <div class="options-button">
 <!--    <button @click="onEditProject">...</button>-->
-
-      <button @click="onEditProject" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">
+<!--    ToDo remove line or use line-->
+<!--      <button @click="onEditProject" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">-->
+      <button @click="openNav" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">
         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M120 256c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm160 0c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm104 56c-30.9 0-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56s-25.1 56-56 56z" clip-rule="evenodd"></path></svg>
       </button>
     </div>

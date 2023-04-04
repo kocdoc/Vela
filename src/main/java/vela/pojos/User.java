@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,7 +45,7 @@ public class User implements Serializable {
     }, inverseJoinColumns = {
             @JoinColumn(name = "request_username")
     })
-    private List<User> requestList;
+    private List<User> requestList = new ArrayList<>();
 
     @ToString.Exclude
     @JsonIgnore
