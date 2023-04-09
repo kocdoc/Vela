@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <a href="#">{{name}}</a>
+  <div style="padding-bottom: 20px">
+    <p class="names">{{ name }}</p>
     <div class="buttons">
       <button @click="handleRequest(name,true)" class="round-button">&#10003;</button>
       <button @click="handleRequest(name,false)" class="round-button">&#88;</button>

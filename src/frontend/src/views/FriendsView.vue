@@ -173,6 +173,7 @@ export default {
 .heading{
   font-size: 25px;
   color: #f1f1f1;
+  margin-bottom: 20px;
 }
 
 .search-container {
@@ -230,13 +231,22 @@ export default {
 }
 /* The sidebar links */
 .sidebar a {
-  padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
   color: #f1f1f1;
   display:inline-block;
   transition: 0.3s;
 }
+
+.names{
+  text-decoration: none;
+  font-weight: lighter;
+  font-size: 25px;
+  color: #f1f1f1;
+  display:inline-block;
+  transition: 0.3s;
+}
+
 .buttons{
   float: right;
   margin-right: 20px;
@@ -244,6 +254,7 @@ export default {
   margin-top: 10px;
   display:inline-block;
   color: #818181;
+  size: 20px;
 }
 .bell{
   position: fixed;
