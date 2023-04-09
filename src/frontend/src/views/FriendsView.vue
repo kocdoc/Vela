@@ -2,6 +2,8 @@
   <div class="next-to-sidebar">
     <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
+      <div style ="padding-left: 20px">
+
       <a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
 <!--      <div>-->
 <!--        <a href="#">NicoTategami</a>-->
@@ -18,15 +20,15 @@
 <!--        </div>-->
 <!--      </div>-->
 <!--      ToDo Formatierung-->
-      <p>Freundschaftsanfragen:</p>
+      <p class="heading">Freundschaftsanfragen</p>
       <RequestComponent v-for="request in requestList" :key="request" :name="request"></RequestComponent>
+    </div>
     </div>
     <!-- Sidebar-Ende -->
     <div class="search-container">
       <input id="friend-input" class="search" placeholder="Suchen">
+      <button id="addButton" @click="addUser" type="button" class="w-64 font-bold text-white bg-[#052A34] hover:bg-[#041D24] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Add</button>
     </div>
-
-    <button @click="addUser">Add</button>
 
     <div class="bell" @click="openNav">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
@@ -168,11 +170,21 @@ export default {
 </script>
 
 <style>
+.heading{
+  font-size: 25px;
+  color: #f1f1f1;
+}
+
 .search-container {
   position: relative;
-  width: 50%;
+  width: 70%;
   margin-left: 0px;
 }
+
+#friend-input{
+  width: 50%;
+}
+
 .search{
   width: 100%;
   padding: 12px 20px;
@@ -183,6 +195,18 @@ export default {
   background-color: white;
   font-size: 22px;
 }
+
+#addButton{
+  padding: 18px 20px 18px 20px;
+  margin: 8px 20px 8px 10px;
+  box-sizing: border-box;
+  border: 2px solid #052A34;
+  border-radius: 25px;
+  background-color: #052A34;
+  font-size: 22px;
+  color: white;
+}
+
 .next-to-sidebar{
   margin-top: 50px;
   margin-left: 300px;

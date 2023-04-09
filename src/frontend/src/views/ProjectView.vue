@@ -125,6 +125,7 @@ export default {
     addTodo () {
       // alert(this.activeProject.projectID)
       const newTask = { taskID: null, title: '', category: '', deadline: null, finishedDate: null, projectID: this.activeProject.projectID, user: null }
+      console.log(newTask)
 
       fetch('/api/taskmanager/addTask?user=' + localStorage.getItem('user_token'), {
         method: 'POST',
@@ -179,7 +180,7 @@ export default {
             this.friendList.push(friend.username)
           })
         })
-      document.getElementById('mySidebar').style.width = '400px'
+      document.getElementById('mySidebar').style.width = '300px'
       // document.getElementById('main').style.marginRight = '300px'
     },
     closeNav () {
@@ -236,34 +237,54 @@ export default {
   display:inline-block;
   transition: 0.3s;
 }
+
+#sidebarContent{
+  margin-left: 20px;
+}
+
+.heading{
+  font-size: 25px;
+  color: #f1f1f1;
+}
+
+.inputs{
+  font-size: 14px;
+  color: #f1f1f1;
+}
+
+#trash-icon{
+  align-items: center;
+  justify-content: center;
+}
 </style>
 
 <template>
 
   <!-- Sidebar -->
   <div id="mySidebar" class="sidebar">
+    <div id = "sidebarContent">
     <a href="javascript:void(0)" class="closebtn" @click="closeNav">&times;</a>
-    <p>Projekt ändern:</p>
-
+    <p class="heading">Projekt ändern</p>
+      <br>
     <!--    {{activeProject.projectID}}-->
     <div class="relative rounded-md" style="margin-bottom: 15px">
-      <label class="block font-medium text-gray-700 leading-5">Projektname</label>
-      <input v-model="activeProject.name" required name="login-username" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+      <label class="block font-medium text-gray-700 leading-5 inputs">Projektname</label>
+      <input v-model="activeProject.name" required name="login-username" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-transparent border text-white border-2 border-white placeholder-gray-500 focus:outline-none focus:shadow-outline-transparent active:text-gray-800">
     </div>
 
     <div class="relative rounded-md" style="margin-bottom: 15px">
-      <label class="block font-medium text-gray-700 leading-5">Beschreibung</label>
-      <input v-model="activeProject.description" required name="login-username" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-white border border-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+      <label class="block font-medium text-gray-700 leading-5 inputs">Beschreibung</label>
+      <input v-model="activeProject.description" required name="login-username" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-transparent border text-white border-2 border-white placeholder-gray-500 focus:outline-none focus:shadow-outline-transparent active:text-gray-800">
     </div>
     <!--    Projektname: <input v-model="project_name" type="text"><br>-->
     <!--    Beschreibung: <input v-model="project_description" type="text">-->
+    <button @click="saveProject" type="button" class="w-64 font-bold text-[#052A34] bg-white hover:bg-[#e0e0e0] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Änderungen speichern</button>
     <br>
-    <button @click="saveProject" type="button" class="w-64 font-bold text-white bg-[#052A34] hover:bg-[#041D24] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Änderungen speichern</button>
-
-    <p>Freund zum Projekt hinzufügen:</p>
+      <br>
+    <p class="heading">Freund hinzufügen</p>
 
     <AddFriendToProjectComponent v-for="friend in friendList" :key="friend" :name="friend" :project-i-d="activeProject.projectID"></AddFriendToProjectComponent>
-
+  </div>
   </div>
   <!-- Sidebar-Ende -->
 
@@ -283,7 +304,9 @@ export default {
 <!--    <button @click="onEditProject">...</button>-->
 <!--    ToDo remove line or use line-->
 <!--      <button @click="onEditProject" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">-->
-      <button @click="openNav" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">
+      <button @click="openNav" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2">
+      </button>
+        <button @click="onEditProject" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">
         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M120 256c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm160 0c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm104 56c-30.9 0-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56s-25.1 56-56 56z" clip-rule="evenodd"></path></svg>
       </button>
     </div>
@@ -340,7 +363,7 @@ export default {
             </td>
             <td class="flex items-center py-4 px-6 space-x-3">
               <button @click="removeTodo(todo)" type="button" class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" clip-rule="evenodd"></path></svg>
+                <svg aria-hidden="true" class="w-5 h-5" id="trash-icon" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" clip-rule="evenodd"></path></svg>
               </button></td>
           </tr>
           </tbody>

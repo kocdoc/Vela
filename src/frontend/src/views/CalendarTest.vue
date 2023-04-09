@@ -17,7 +17,7 @@ export default {
         weekends: true, // initial value
         weekNumberCalculation: 'ISO',
         locale: 'de',
-        eventColor: '#052A34',
+        eventColor: '#28AFB0',
         events: [],
         customButtons: {
           // addEvent: {
@@ -83,7 +83,7 @@ export default {
         })
     },
     openNav () {
-      document.getElementById('mySidebar').style.width = '450px'
+      document.getElementById('mySidebar').style.width = '300px'
     },
     closeNav () {
       document.getElementById('mySidebar').style.width = '0'
@@ -163,6 +163,16 @@ export default {
 </script>
 
 <style>
+.fc-day-today {
+  background: #E5F8FD !important;
+
+}
+
+th{
+  background-color:#052A34;
+  color: white;
+}
+
 .calendarDiv {
   padding-top: 20px;
   width: 80%;
@@ -223,21 +233,31 @@ export default {
 .openbtn:hover {
   background-color: #444;
 }
+
+#date_input{
+  color-scheme: dark;
+}
 </style>
 
 <template>
  <FullCalendar class="calendarDiv" :options="calendarOptions"/>
   <div id="mySidebar" class="sidebar">
-    <div style="padding-left: 30px">
-      <a class="closebtn" @click="closeNav">&times;</a>
-      <p style="color: white">Title:</p><input id="title_input" type="text">
-      <p style="color: white">Date:</p><input id="date_input" type="text">
-      <p style="color: white">Description:</p><input id="description_input" type="text">
-      <br><br>
+    <div style="padding-left: 20px">
+      <div class="relative rounded-md" style="margin-bottom: 15px">
+        <label class="block font-medium text-white leading-5">Title</label>
+        <input id="title_input" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-transparent border text-white border-2 border-white placeholder-gray-500 focus:outline-none focus:shadow-outline-transparent active:text-gray-800">
+      </div>
+      <div class="relative rounded-md" style="margin-bottom: 15px">
+        <label class="block font-medium text-white leading-5">Date</label>
+        <input id="date_input" type="date" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-transparent border text-white border-2 border-white placeholder-gray-500 focus:outline-none focus:shadow-outline-transparent active:text-gray-800">
+      </div>
+      <div class="relative rounded-md" style="margin-bottom: 15px">
+        <label class="block font-medium text-white leading-5">Description</label>
+        <input id="description_input" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-transparent border text-white border-2 border-white placeholder-gray-500 focus:outline-none focus:shadow-outline-transparent active:text-gray-800">
+      </div>
 
-      <button style="background-color: white; color: black" @click="saveEvent">Save event</button>
-      <br>
-      <button style="background-color: white; color: black" @click="removeEvent">Delete event</button>
+      <button @click="saveEvent" type="button" class="w-64 font-bold text-[#052A34] bg-white hover:bg-[#e0e0e0] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Save event</button>
+      <button @click="removeEvent" type="button" class="w-64 font-bold text-white bg-[#D72638] hover:bg-[#de4b5b] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Delete event</button>
 
       <p id="eventID" hidden></p>
 
