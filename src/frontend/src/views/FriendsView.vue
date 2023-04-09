@@ -19,7 +19,7 @@
 <!--          <button class="round-button">&#88;</button>-->
 <!--        </div>-->
 <!--      </div>-->
-<!--      ToDo Formatierung-->
+<!--      ToDo Formatierung -->
       <p class="heading">Freundschaftsanfragen</p>
       <RequestComponent v-for="request in requestList" :key="request" :name="request"></RequestComponent>
     </div>
