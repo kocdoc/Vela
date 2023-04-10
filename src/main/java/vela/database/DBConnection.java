@@ -24,7 +24,7 @@ public class DBConnection {
     private EntityManager em;
 
     private DBConnection() {
-        this.connect();
+        instance.connect();
     }
 
     private void connect() {
@@ -45,6 +45,7 @@ public class DBConnection {
     }
 
     private void addUserWithTasks() {
+        instance.connect();
         List<Task> taskList = new ArrayList<>();
         taskList.add(new Task(null, LocalDate.now(), null, "Description1", "Title1", null, null,null));
         taskList.add(new Task(null, LocalDate.now(), null, "Description2", "Title2", null, null,null));
@@ -65,10 +66,12 @@ public class DBConnection {
         em.persist(user);
         em.getTransaction().begin();
         em.getTransaction().commit();
+        instance.disconnect();
     }
 
 
     public List<Task> getTaskList(String username, String sortTyp, Long projectId){
+        instance.connect();
         TypedQuery<Task> taskTypedQuery;
         if(projectId != null){
           taskTypedQuery = em.createNamedQuery("Task.getProjectTasks", Task.class);
@@ -84,16 +87,21 @@ public class DBConnection {
         }
 
         taskTypedQuery.setParameter("username",username);
+        instance.disconnect();
         return taskTypedQuery.getResultList();
     }
 
     public Task getTaskById(Integer ID){
+        instance.connect();
         TypedQuery<Task> taskTypedQuery = em.createNamedQuery("Task.getTaskByID", Task.class);
         taskTypedQuery.setParameter("id",ID);
-        return taskTypedQuery.getSingleResult();
+        Task task = taskTypedQuery.getSingleResult();
+        instance.disconnect();
+        return task;
     }
 
     public void addTaskToDatabase(Task task, String username){
+        instance.connect();
         User user = em.find(User.class,username);
         task.setUser(user);
         user.getTaskList().add(task);
@@ -103,9 +111,11 @@ public class DBConnection {
         em.persist(user);
         em.getTransaction().begin();
         em.getTransaction().commit();
+        instance.disconnect();
     }
 
     public void removeTaskFromDatabase(Task task, String username) {
+        instance.connect();
         User user = em.find(User.class,username);
         task.setUser(user);
         Task taskToDelete = em.find(Task.class, task.getTaskID());
@@ -115,9 +125,11 @@ public class DBConnection {
         em.getTransaction().begin();
         em.remove(taskToDelete);
         em.getTransaction().commit();
+        instance.disconnect();
     }
 
     public void updateTaskFromDatabase(Task task, String username){
+        instance.connect();
         Task updatedTask = em.find(Task.class, task.getTaskID());
         User user = em.find(User.class, username);
         user.getTaskList().forEach(task1 -> task1.setUser(user));
@@ -137,20 +149,25 @@ public class DBConnection {
         em.persist(updatedTask);
         em.getTransaction().begin();
         em.getTransaction().commit();
+        instance.disconnect();
     }
 
     public User getUserByUsername(String username){
+        instance.connect();
         User user = null;
         try{
             user = em.createNamedQuery("user.getUserByUsername", User.class).setParameter("username", username).getSingleResult();
         } catch(NoResultException e){
             user = null;
         }
+        instance.disconnect();
         return user;
     }
 
     public User login(String username, String password){
+        instance.connect();
         User user = getUserByUsername(username);
+        instance.disconnect();
         try{
             if(user.getPassword().equals(password)){
                 return user;
@@ -163,63 +180,84 @@ public class DBConnection {
     }
 
     public void addUser(User user) throws KeyAlreadyExistsException {
+        instance.connect();
         if(!getAllUsers().contains(user)){
             em.persist(user);
             em.getTransaction().begin();
             em.getTransaction().commit();
         } else{
             log.info("username already exists");
+            instance.disconnect();
             throw new KeyAlreadyExistsException("username already exists");
         }
+        instance.disconnect();
     }
 
     public Project getProject(Integer projectId){
+        instance.connect();
         TypedQuery<Project> projectTypedQuery = em.createNamedQuery("Project.getProjectById", Project.class);
         projectTypedQuery.setParameter("projectID", projectId);
-        return projectTypedQuery.getSingleResult();
+        Project project = projectTypedQuery.getSingleResult();
+        instance.disconnect();
+        return project;
     }
 
     public List<User> getAllUsers(){
+        instance.connect();
         List<User> users = em.createNamedQuery("user.getAllUsers", User.class).getResultList();
+        instance.disconnect();
         return users;
     }
 
     public void addProjectToDatabase(Project project, String username){
+        instance.connect();
         User user = em.find(User.class, username);
         project.addUser(user);
         try{
             user.getProjectList().add(project);
         } catch (NullPointerException e){
+            instance.disconnect();
             throw new NoSuchElementException("user does not exist");
         }
         em.merge(user);
         em.getTransaction().begin();
         em.getTransaction().commit();
+        instance.disconnect();
     }
 
     public void editProject(Project editedProject){
+        instance.connect();
         if(!getAllProjects().contains(editedProject)){
+            instance.disconnect();
             throw new NoSuchElementException("project does not exist");
         }
         em.merge(editedProject);
         em.getTransaction().begin();
         em.getTransaction().commit();
+        instance.disconnect();
     }
 
     public void editUserData(User editedUser){
+        instance.connect();
         if(!getAllUsers().contains(editedUser)){
+            instance.disconnect();
             throw new NoSuchElementException("user does not exist");
         }
         em.merge(editedUser);
         em.getTransaction().begin();
         em.getTransaction().commit();
+        instance.disconnect();
     }
 
     public List<Project> getAllProjects(){
-        return em.createNamedQuery("Project.getAll").getResultList();
+        instance.connect();
+        List<Project> projects = em.createNamedQuery("Project.getAll").getResultList();
+        instance.disconnect();
+        return projects;
     }
 
     public List<Project> getProjectsByUser(String username){
+        instance.connect();
         List<Project> allProjects = getAllProjects();
         List<Project> projects = new ArrayList<>();
         for(Project project : allProjects){
@@ -229,10 +267,12 @@ public class DBConnection {
                 }
             });
         }
+        instance.disconnect();
         return projects;
     }
 
     public List<Task> getTasksOfProject(int projectId){
+        instance.connect();
         List<Project> projects = getAllProjects();
         List<Task> tasks = new ArrayList<>();
         projects.forEach(project -> {
@@ -240,10 +280,12 @@ public class DBConnection {
                 tasks.addAll(project.getTaskList());
             }
         });
+        instance.disconnect();
         return tasks;
     }
 
     public void deleteProject(int projectId){
+        instance.connect();
 //        em.createNamedQuery("Project.delete", Project.class).setParameter("projectID", projectId);
         List<Project> projects = getAllProjects();
         Project project = null;
@@ -253,33 +295,40 @@ public class DBConnection {
             }
         }
         if(project == null){
+            instance.disconnect();
             throw new NoSuchElementException("project does not exist");
         }
         em.remove(project);
         em.getTransaction().begin();
         em.getTransaction().commit();
+        instance.disconnect();
     }
 
     public Event addEventToDB(Event event){
+        instance.connect();
         em.persist(event);
         em.getTransaction().begin();
         em.getTransaction().commit();
-
+        instance.disconnect();
         return event;
     }
 
     public void deleteEventFromDB(int eventId){
+        instance.connect();
         try{
             Event event = em.find(Event.class, eventId);
             em.remove(event);
             em.getTransaction().begin();
             em.getTransaction().commit();
         } catch (Exception e){
+            instance.disconnect();
             throw new NoSuchElementException("event does not exist");
         }
+        instance.disconnect();
     }
 
     public Event updateEventOnDB(Event event){
+        instance.connect();
         Event dbEvent = em.find(Event.class, event.getEventId());
         if(event.getDate() != null){
             dbEvent.setDate(event.getDate());
@@ -293,22 +342,28 @@ public class DBConnection {
         em.merge(dbEvent);
         em.getTransaction().begin();
         em.getTransaction().commit();
-
+        instance.disconnect();
         return dbEvent;
     }
 
     public List<Event> getEventsByUser(String username){
-        return em.createNamedQuery("Event.getEventsByUser").setParameter("username", username).getResultList();
+        instance.connect();
+        List<Event> eventList =  em.createNamedQuery("Event.getEventsByUser").setParameter("username", username).getResultList();
+        instance.disconnect();
+        return eventList;
     }
 
     public Project addUserToProject(int projectId, String username){
+        instance.connect();
         if(username != null){
            Project project = em.find(Project.class, projectId);
            if(project == null){
+               instance.disconnect();
                throw new NoSuchElementException("project does not exist");
            }
            User user = em.find(User.class, username);
            if(user == null){
+               instance.disconnect();
                throw new NoSuchElementException("user does not exist");
            }
            project.addUser(user);
@@ -316,22 +371,20 @@ public class DBConnection {
            em.merge(user);
            em.getTransaction().begin();
            em.getTransaction().commit();
+           instance.disconnect();
            return project;
         }
+        instance.disconnect();
         throw new NoSuchElementException("user does not exist");
     }
 
     public void saveFriendRequests(User user){
+        instance.connect();
         em.merge(user);
         em.getTransaction().begin();
         em.getTransaction().commit();
         System.out.println(user.getFriendList());
-    }
-
-    public void addFriendToDatabase(User mainUser){
-        em.merge(mainUser);
-        em.getTransaction().begin();
-        em.getTransaction().commit();
+        instance.disconnect();
     }
 
     public static void main(String[] args) {
