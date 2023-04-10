@@ -21,6 +21,7 @@ public class FriendRequestResource {
     @GetMapping("/getRequests")
     public List<String> getRequests(@RequestParam String username) throws ParseException {
         User user = instance.getUserByUsername(JWTNeededFilter.getUsername(username));
+        System.out.println(user);
         List<String> usernameList = new ArrayList<>();
         user.getRequestList().forEach(user1 -> usernameList.add(user1.getUsername()));
         return usernameList;
@@ -56,6 +57,7 @@ public class FriendRequestResource {
     @GetMapping("/getAllFriends")
     public ResponseEntity getFriendsOfAUser(@RequestParam String username) throws ParseException {
         User user = instance.getUserByUsername(JWTNeededFilter.getUsername(username));
+        System.out.println(user);
         user.getFriendList().forEach(user1 -> user1.setFriendList(null));
         if(user == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -70,7 +72,7 @@ public class FriendRequestResource {
         User mainUser = instance.getUserByUsername(JWTNeededFilter.getUsername(token[3]));
         User addedUser = instance.getUserByUsername(userToAccept);
         System.out.println(mainUser);
-        System.out.println(userToAccept);
+        System.out.println(addedUser);
         if(!requestAnswer || addedUser == null || mainUser == null){
             if(!requestAnswer){
                 mainUser.getRequestList().removeIf(user1 -> user1.equals(addedUser));
