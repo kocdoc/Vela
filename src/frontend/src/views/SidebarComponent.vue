@@ -68,7 +68,7 @@ export default {
                     <path fill="currentColor" d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0S96 57.3 96 128s57.3 128 128 128zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/>
                   </svg>
                   </div>
-                  <span style="font-weight: bold" class="ml-3 w-32 h-6 text-[#052A34] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor">{{user}}</span>
+                  <span style="font-weight: bold" class="ml-3 w-32 h-6 text-[#052A34] transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor">Profil</span>
                 </router-link>
               </div>
       </div>

@@ -3,8 +3,8 @@ export default {
   username: 'LoginView',
   data () {
     return {
-      username: 'admin',
-      password: 'admin'
+      username: '',
+      password: 'Passwort1!'
     }
   },
   methods: {

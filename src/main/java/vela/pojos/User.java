@@ -30,6 +30,7 @@ public class User implements Serializable {
     private String password;
 
     @ToString.Exclude
+    @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "friend", joinColumns = {
             @JoinColumn(name = "own_username")
@@ -38,6 +39,7 @@ public class User implements Serializable {
     })
     private List<User> friendList;
 
+    @JsonIgnore
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "friend_request", joinColumns = {
@@ -59,6 +61,7 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST)
     @ToString.Exclude
+    @JsonIgnore
     private List<Task> taskList;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST)

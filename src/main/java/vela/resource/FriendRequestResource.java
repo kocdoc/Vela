@@ -21,9 +21,9 @@ public class FriendRequestResource {
     @GetMapping("/getRequests")
     public List<String> getRequests(@RequestParam String username) throws ParseException {
         User user = instance.getUserByUsername(JWTNeededFilter.getUsername(username));
-        System.out.println(user);
         List<String> usernameList = new ArrayList<>();
         user.getRequestList().forEach(user1 -> usernameList.add(user1.getUsername()));
+        System.out.println(user);
         return usernameList;
     }
 
@@ -35,18 +35,17 @@ public class FriendRequestResource {
         System.out.println(userToAdd);
         System.out.println(mainUser);
         //mainUser.setRequestList(new ArrayList<>());
-        if(userToAdd == null){
+        if (userToAdd == null) {
             return HttpStatus.NOT_FOUND;
         }
-        if(mainUser.getRequestList().contains(userToAdd)){
+        if (mainUser.getRequestList().contains(userToAdd)) {
             return HttpStatus.CONFLICT;
         }
         mainUser.getRequestList().add(userToAdd);
         System.out.println(mainUser.getRequestList());
         try {
             instance.saveFriendRequests(mainUser);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return HttpStatus.CONFLICT;
         }
         return HttpStatus.ACCEPTED;
@@ -57,9 +56,8 @@ public class FriendRequestResource {
     @GetMapping("/getAllFriends")
     public ResponseEntity getFriendsOfAUser(@RequestParam String username) throws ParseException {
         User user = instance.getUserByUsername(JWTNeededFilter.getUsername(username));
-        System.out.println(user);
         user.getFriendList().forEach(user1 -> user1.setFriendList(null));
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(user.getFriendList());
@@ -71,22 +69,36 @@ public class FriendRequestResource {
         String token[] = user.split("\"");
         User mainUser = instance.getUserByUsername(JWTNeededFilter.getUsername(token[3]));
         User addedUser = instance.getUserByUsername(userToAccept);
-        System.out.println(mainUser);
-        System.out.println(addedUser);
-        if(!requestAnswer || addedUser == null || mainUser == null){
-            if(!requestAnswer){
+        System.out.println("Test");
+        System.out.println(addedUser.getFriendList());
+        System.out.println("__________________");
+        System.out.println("1");
+        if (!requestAnswer || addedUser == null || mainUser == null) {
+            if (!requestAnswer) {
+                System.out.println("2");
                 mainUser.getRequestList().removeIf(user1 -> user1.equals(addedUser));
+                System.out.println("3");
                 instance.saveFriendRequests(mainUser);
+                System.out.println("4");
                 instance.saveFriendRequests(addedUser);
+                System.out.println("5");
             }
+            System.out.println("6");
             return HttpStatus.CONFLICT;
         }
 
+        System.out.println("7");
         mainUser.getFriendList().add(addedUser);
+        System.out.println("8");
         System.out.println(mainUser.getFriendList());
+        System.out.println("9");
         addedUser.getFriendList().add(mainUser);
+        System.out.println("10");
         mainUser.getRequestList().removeIf(user1 -> user1.equals(addedUser));
-
+        System.out.println("11");
+        System.out.println("Friendlist");
+        System.out.println(mainUser.getFriendList());
+        System.out.println("12");
         instance.saveFriendRequests(mainUser);
         return HttpStatus.OK;
     }

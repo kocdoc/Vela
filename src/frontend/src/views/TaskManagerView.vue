@@ -184,12 +184,13 @@ export default {
               <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
             </div>
           </td>
-         <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          <td class="py-4 px-6">
+<!--          <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">-->
             <input v-model="todo.title" @keyup.enter="updateTask(todo)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Titel">
-          </th>
-         <td class="py-4 px-6">
-           <input v-model="todo.category" @keyup.enter="updateTask(todo)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Kategorie">
-         </td>
+          </td>
+          <td class="py-4 px-6">
+            <input v-model="todo.category" @keyup.enter="updateTask(todo)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Kategorie">
+          </td>
 
           <td class="py-4 px-6">
             <div class="relative">
@@ -207,7 +208,6 @@ export default {
              </div>
               </button>
           </td>
-
         </tr>
         </tbody>
       </table>

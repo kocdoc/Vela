@@ -325,6 +325,7 @@ public class DBConnection {
         em.merge(user);
         em.getTransaction().begin();
         em.getTransaction().commit();
+        System.out.println(user.getFriendList());
     }
 
     public void addFriendToDatabase(User mainUser){

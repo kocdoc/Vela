@@ -305,10 +305,11 @@ export default {
 <!--    ToDo remove line or use line-->
 <!--      <button @click="onEditProject" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">-->
       <button @click="openNav" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2">
-      </button>
-        <button @click="onEditProject" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">
         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M120 256c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm160 0c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm104 56c-30.9 0-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56s-25.1 56-56 56z" clip-rule="evenodd"></path></svg>
       </button>
+<!--        <button @click="onEditProject" type="button" class="bg-[#052A34] text-white border border-[#052A34] hover:bg-[#041D24] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#A7E6F7] font-medium rounded-lg text-sm p-2.5 items-end mr-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800">-->
+<!--        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M120 256c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm160 0c0 30.9-25.1 56-56 56s-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56zm104 56c-30.9 0-56-25.1-56-56s25.1-56 56-56s56 25.1 56 56s-25.1 56-56 56z" clip-rule="evenodd"></path></svg>-->
+<!--      </button>-->
     </div>
 
       <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
@@ -347,9 +348,10 @@ export default {
                 <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
               </div>
             </td>
-            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+<!--            <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">-->
+            <td class="py-4 px-6">
               <input v-model="todo.title" @keyup.enter="updateTask(todo)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Titel">
-            </th>
+            </td>
             <td class="py-4 px-6">
               <input v-model="todo.category" @keyup.enter="updateTask(todo)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Kategorie">
             </td>
