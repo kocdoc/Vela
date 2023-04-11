@@ -1,5 +1,6 @@
 package vela.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,11 +33,13 @@ public class Project implements Serializable {
     private String name;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "projectList")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "projectList", fetch = FetchType.EAGER)
     private List<User> userList;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     @ToString.Exclude
+    @JsonIgnore
     private List<Task> taskList;
 
     public Project(String description, String name) {

@@ -256,8 +256,8 @@ th{
         <input id="description_input" type="text" class="w-64 form-input py-3 px-4 leading-5 rounded-md transition duration-150 ease-in-out bg-transparent border text-white border-2 border-white placeholder-gray-500 focus:outline-none focus:shadow-outline-transparent active:text-gray-800">
       </div>
 
-      <button @click="saveEvent" type="button" class="w-64 font-bold text-[#052A34] bg-white hover:bg-[#e0e0e0] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Save event</button>
-      <button @click="removeEvent" type="button" class="w-64 font-bold text-white bg-[#D72638] hover:bg-[#de4b5b] focus:ring-4 focus:ring-[#A7E6F7] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Delete event</button>
+      <button @click="saveEvent" type="button" class="w-64 font-bold text-[#052A34] bg-white hover:bg-[#e0e0e0] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Save event</button>
+      <button @click="removeEvent" type="button" class="w-64 font-bold text-white bg-[#D72638] hover:bg-[#de4b5b] font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 dark:bg-black-600 dark:hover:bg-[#041D24] focus:outline-none dark:focus:ring-[#A7E6F7]">Delete event</button>
 
       <p id="eventID" hidden></p>
 

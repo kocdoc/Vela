@@ -51,7 +51,7 @@ public class User implements Serializable {
 
     @ToString.Exclude
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_project", joinColumns = {
             @JoinColumn(name = "username")
     }, inverseJoinColumns = {
@@ -59,12 +59,12 @@ public class User implements Serializable {
     })
     private List<Project> projectList;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @ToString.Exclude
     @JsonIgnore
     private List<Task> taskList;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Event> eventList;
 

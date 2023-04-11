@@ -61,9 +61,15 @@ public class TaskManagerResource {
 
             if(task.getProjectID() != null){
                 Project project = instance.getProject(Math.toIntExact(task.getProjectID()));
+                System.out.println("Projekt:"+project);
+                System.out.println(project.getTaskList());
+                System.out.println(project.getUserList());
                 task.setProject(project);
-                instance.addTaskToDatabase(task,JWTNeededFilter.getUsername(user));
-                return ResponseEntity.status(HttpStatus.CREATED).body(task);
+//                instance.connect();
+                Task returnTask = instance.addTaskToDatabase(task,JWTNeededFilter.getUsername(user));
+
+//                instance.disconnect();
+                return ResponseEntity.status(HttpStatus.CREATED).body(returnTask);
             }
 
             tasksList.add(task);

@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @NamedQueries({
         @NamedQuery(name = "Task.getAllTasks", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = NULL"),
         @NamedQuery(name = "Task.getTaskByID", query = "SELECT t FROM Task t WHERE t.taskID = :id"),
-        @NamedQuery(name = "Task.getProjectTasks", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = :pId"),
+        @NamedQuery(name = "Task.getProjectTasks", query = "SELECT t FROM Task t WHERE t.project.projectID = :pId"),
         @NamedQuery(name = "Task.SortedByCategory", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = NULL ORDER BY t.category"),
         @NamedQuery(name = "Task.SortedByDeadline", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = NULL ORDER BY t.deadline"),
         @NamedQuery(name = "Task.SortedByTitle", query = "SELECT t FROM Task t WHERE t.user.username LIKE :username AND t.project.projectID = NULL ORDER BY t.title")
@@ -41,11 +41,10 @@ public class Task implements Serializable {
     @JsonIgnore
     private User user;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "project_id")
     private Project project;
 
     @Transient
-    private Long projectID;
+    private Integer projectID;
 }

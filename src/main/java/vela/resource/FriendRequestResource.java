@@ -21,17 +21,42 @@ public class FriendRequestResource {
     @GetMapping("/getRequests")
     public List<String> getRequests(@RequestParam String username) throws ParseException {
         User user = instance.getUserByUsername(JWTNeededFilter.getUsername(username));
+        System.out.println("USer:"+ user);
         List<String> usernameList = new ArrayList<>();
         user.getRequestList().forEach(user1 -> usernameList.add(user1.getUsername()));
         System.out.println(user);
         return usernameList;
     }
 
+//    @PostMapping("/addUserToFR")
+//    public HttpStatus addUserToFriendRequestList(@RequestBody String mainUsername, @RequestParam String usernameToAdd) throws ParseException {
+//        String token[] = mainUsername.split("\"");
+//        User userToAdd = instance.getUserByUsername(usernameToAdd);
+//        User mainUser = instance.getUserByUsername(JWTNeededFilter.getUsername(token[3]));
+//        System.out.println(userToAdd);
+//        System.out.println(mainUser);
+//        //mainUser.setRequestList(new ArrayList<>());
+//        if (userToAdd == null) {
+//            return HttpStatus.NOT_FOUND;
+//        }
+//        if (mainUser.getRequestList().contains(userToAdd)) {
+//            return HttpStatus.CONFLICT;
+//        }
+//        mainUser.getRequestList().add(userToAdd);
+//        System.out.println(mainUser.getRequestList());
+//        try {
+//            instance.saveFriendRequests(mainUser);
+//        } catch (Exception e) {
+//            return HttpStatus.CONFLICT;
+//        }
+//        return HttpStatus.ACCEPTED;
+//    }
+
     @PostMapping("/addUserToFR")
     public HttpStatus addUserToFriendRequestList(@RequestBody String mainUsername, @RequestParam String usernameToAdd) throws ParseException {
         String token[] = mainUsername.split("\"");
-        User userToAdd = instance.getUserByUsername(usernameToAdd);
-        User mainUser = instance.getUserByUsername(JWTNeededFilter.getUsername(token[3]));
+        User mainUser = instance.getUserByUsername(usernameToAdd);
+        User userToAdd = instance.getUserByUsername(JWTNeededFilter.getUsername(token[3]));
         System.out.println(userToAdd);
         System.out.println(mainUser);
         //mainUser.setRequestList(new ArrayList<>());
@@ -50,7 +75,6 @@ public class FriendRequestResource {
         }
         return HttpStatus.ACCEPTED;
     }
-
 
     //Get Friends
     @GetMapping("/getAllFriends")

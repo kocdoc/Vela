@@ -24,10 +24,10 @@ public class DBConnection {
     private EntityManager em;
 
     private DBConnection() {
-        instance.connect();
+//        instance.connect();
     }
 
-    private void connect() {
+    public void connect() {
         emf = Persistence.createEntityManagerFactory("PU_VelaDB");
         em = emf.createEntityManager();
     }
@@ -70,7 +70,7 @@ public class DBConnection {
     }
 
 
-    public List<Task> getTaskList(String username, String sortTyp, Long projectId){
+    public List<Task> getTaskList(String username, String sortTyp, Integer projectId){
         instance.connect();
         TypedQuery<Task> taskTypedQuery;
         if(projectId != null){
@@ -79,16 +79,20 @@ public class DBConnection {
         }
           else if(sortTyp == "deadline"){
             taskTypedQuery = em.createNamedQuery("Task.getAllTasks", Task.class);
+            taskTypedQuery.setParameter("username",username);
         } else if (sortTyp == "category") {
             taskTypedQuery = em.createNamedQuery("Task.SortedByCategory", Task.class);
+            taskTypedQuery.setParameter("username",username);
         }
         else{
             taskTypedQuery = em.createNamedQuery("Task.SortedByTitle", Task.class);
+            taskTypedQuery.setParameter("username",username);
         }
 
-        taskTypedQuery.setParameter("username",username);
+//        taskTypedQuery.setParameter("username",username);
+        List<Task> tasks = taskTypedQuery.getResultList();
         instance.disconnect();
-        return taskTypedQuery.getResultList();
+        return tasks;
     }
 
     public Task getTaskById(Integer ID){
@@ -100,18 +104,23 @@ public class DBConnection {
         return task;
     }
 
-    public void addTaskToDatabase(Task task, String username){
+    public Task addTaskToDatabase(Task task, String username){
         instance.connect();
         User user = em.find(User.class,username);
         task.setUser(user);
         user.getTaskList().add(task);
         user.getTaskList().forEach(task1 -> task1.setUser(user));
         user.getTaskList().forEach(task1 -> System.out.println(task1.getUser()));
-        System.out.println("sdgdfgf dg dfg "+task);
-        em.persist(user);
+        System.out.println("sdgdfgf dg dfg "+user.getProjectList());
+        System.out.println(task);
+        User testUser = em.merge(user);
+//        System.out.println(testUser);
+//        System.out.println(testUser.getTaskList().get(testUser.getTaskList().size()-1));
+        task.setTaskID(testUser.getTaskList().get(testUser.getTaskList().size()-1).getTaskID());
         em.getTransaction().begin();
         em.getTransaction().commit();
         instance.disconnect();
+        return task;
     }
 
     public void removeTaskFromDatabase(Task task, String username) {
@@ -160,14 +169,14 @@ public class DBConnection {
         } catch(NoResultException e){
             user = null;
         }
-        instance.disconnect();
+//        instance.disconnect();
         return user;
     }
 
     public User login(String username, String password){
-        instance.connect();
+//        instance.connect();
         User user = getUserByUsername(username);
-        instance.disconnect();
+//        instance.disconnect();
         try{
             if(user.getPassword().equals(password)){
                 return user;
@@ -180,8 +189,8 @@ public class DBConnection {
     }
 
     public void addUser(User user) throws KeyAlreadyExistsException {
-        instance.connect();
         if(!getAllUsers().contains(user)){
+            instance.connect();
             em.persist(user);
             em.getTransaction().begin();
             em.getTransaction().commit();
@@ -226,11 +235,11 @@ public class DBConnection {
     }
 
     public void editProject(Project editedProject){
-        instance.connect();
         if(!getAllProjects().contains(editedProject)){
-            instance.disconnect();
+//            instance.disconnect();
             throw new NoSuchElementException("project does not exist");
         }
+        instance.connect();
         em.merge(editedProject);
         em.getTransaction().begin();
         em.getTransaction().commit();
@@ -238,11 +247,12 @@ public class DBConnection {
     }
 
     public void editUserData(User editedUser){
-        instance.connect();
+
         if(!getAllUsers().contains(editedUser)){
             instance.disconnect();
             throw new NoSuchElementException("user does not exist");
         }
+        instance.connect();
         em.merge(editedUser);
         em.getTransaction().begin();
         em.getTransaction().commit();
@@ -267,20 +277,19 @@ public class DBConnection {
                 }
             });
         }
-        instance.disconnect();
+//        instance.disconnect();
         return projects;
     }
 
     public List<Task> getTasksOfProject(int projectId){
-        instance.connect();
         List<Project> projects = getAllProjects();
         List<Task> tasks = new ArrayList<>();
         projects.forEach(project -> {
             if(project.getProjectID() == projectId){
                 tasks.addAll(project.getTaskList());
+                System.out.println("Tasks: "+tasks);
             }
         });
-        instance.disconnect();
         return tasks;
     }
 
@@ -306,11 +315,11 @@ public class DBConnection {
 
     public Event addEventToDB(Event event){
         instance.connect();
-        em.persist(event);
+        Event e = em.merge(event);
         em.getTransaction().begin();
         em.getTransaction().commit();
         instance.disconnect();
-        return event;
+        return e;
     }
 
     public void deleteEventFromDB(int eventId){
